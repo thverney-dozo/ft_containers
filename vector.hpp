@@ -1,6 +1,7 @@
 #include <iostream>
 
-namespace ftc {
+namespace ftc
+{
 
 template<typename T>
 class Vector_Iterator
