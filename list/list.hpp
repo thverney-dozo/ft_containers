@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   list.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 19:08:56 by aeoithd          ###   ########.fr       */
+/*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
+/*   Updated: 2021/01/19 19:34:43 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_HPP
-# define VECTOR_HPP
+#ifndef LIST_HPP
+# define LIST_HPP
 
 # include <iostream>
 # include <algorithm>
@@ -20,22 +20,30 @@ namespace ft
 {
 
 	template <class T, class Alloc = std::allocator<T> >
-	class vector
+	class list
 	{
 		public:
-			vector();
-			~vector();	
-			vector& operator=(const vector &affect)
+			list();
+			~list();	
+			list& operator=(const list &affect)
 			{
 				clear();
 				insert(begin(), affect.begin(), affect.end());
 				return (*this);
 			};
+            typedef struct 		s_lst
+			{
+				value_type		elm;
+				struct s_lst	*next;
+				struct s_lst	*prev;
+			}					t_lst;
+
 		
 		private:
-			pointer 	ptr;
-			size_t 		size_value;
-			size_t 		allocated_size;
+            t_lst		*first;
+			t_lst		*last;
+			size_type	size_value;
+
 
 		public:
 			typedef T 											value_type;	
@@ -43,10 +51,10 @@ namespace ft
 			typedef T const 									&reference;
 			typedef T* 											pointer;
 			typedef T const 									*pointer;
-			typedef vector_iterator<value_type>					iterator;
-			typedef vector_iterator<value_type const> 			const_iterator;
-			typedef vector_reverse_iterator<value_type> 		reverse_iterator;
-			typedef vector_reverse_iterator<value_type const> 	const_reverse_iterator;
+			typedef list_iterator<value_type>					iterator;
+			typedef list_iterator<value_type const> 			const_iterator;
+			typedef list_reverse_iterator<value_type> 		reverse_iterator;
+			typedef list_reverse_iterator<value_type const> 	const_reverse_iterator;
 			typedef	std::allocator<value_type>					allocator_type;
 			typedef std::ptrdiff_t 								difference_type;
 			typedef unsigned int 								size_type;
@@ -111,8 +119,8 @@ namespace ft
 					throw std::out_of_range("Index out of range");
 				return (ptr[n]);
 			};
-			reference front() 										{ return (_ptr[0]); };
-			const_reference front() 					const		{ return (_ptr[0]); };
+			reference front() 										{ return (ptr[0]); };
+			const_reference front() 					const		{ return (ptr[0]); };
 			reference back()										{ return (ptr[size_value -1]); };
 			const_reference back() 						const		{ return (ptr[size_value -1]); };;
 
@@ -187,7 +195,7 @@ namespace ft
 				size_value -= n;
 				return (iterator(ptr + new_info));
 			};
-			void swap (vector& x)
+			void swap (list& x)
 			{
 				std::swap(ptr, x.ptr);
 				std::swap(size_value, x.size_value);
@@ -199,7 +207,7 @@ namespace ft
 			};
 	};
 	template <class T>
-	bool operator==(const vector<T>& a, const vector<T>& b)
+	bool operator==(const list<T>& a, const list<T>& b)
 	{
 		if (a.size() != b.size())
 			return (false);
@@ -210,37 +218,37 @@ namespace ft
 	}
 
 	template <class T>
-	bool operator!=(const vector<T>& a, const vector<T>& b)
+	bool operator!=(const list<T>& a, const list<T>& b)
 	{
 		return (!(a == b));
 	}
 
 	template <class T>
-	bool operator<(const vector<T>& a, const vector<T>& b)
+	bool operator<(const list<T>& a, const list<T>& b)
 	{
 		size_t		n;
 
 		n = a.size() > b.size() ? b.size() : a.size;
-		for (typename vector<T>::size_type i = 0; i < n; i++)
+		for (typename list<T>::size_type i = 0; i < n; i++)
 			if (a.at(i) != b.at(i))
 				return(a.at(i) < b.at(i) ? true : false);
 		return (a.size() < b.size());
 	}
 
 	template <class T>
-	bool operator<=(const vector<T>& a, const vector<T>& b)
+	bool operator<=(const list<T>& a, const list<T>& b)
 	{
 		return (a < b || a == b);
 	}
 
 	template <class T>
-	bool operator>(const vector<T>& a, const vector<T>& b)
+	bool operator>(const list<T>& a, const list<T>& b)
 	{
 		return (!(a < b) && !(a == b));
 	}
 
 	template <class T>
-	bool operator>=(const vector<T>& a, const vector<T>& b)
+	bool operator>=(const list<T>& a, const list<T>& b)
 	{
 		return (!(a < b));
 	}
