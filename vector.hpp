@@ -198,7 +198,6 @@ class vector
 			erase(begin(), end());
 		};
 };
-
 }
 
 #endif
