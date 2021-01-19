@@ -6,12 +6,12 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 11:30:01 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 11:30:02 by thverney         ###   ########.fr       */
+/*   Updated: 2021/01/19 13:29:22 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 template<typename T>
-class Vector_Reverse_Iterator
+class vector_reverse_iterator
 {
 	protected:
 		T *p;
@@ -29,41 +29,41 @@ class Vector_Reverse_Iterator
 	public:
 		reference operator*()
 		{
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			return (*--tmp);
 		}
 		const_reference operator*() const
 		{
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			return (*--tmp);
 		}
 		pointer operator->() {
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			return (&*--tmp);
 		}
 		const_pointer operator->() const
 		{
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			return (&*--tmp);
 		}
-		Vector_Reverse_Iterator operator++(int
+		vector_reverse_iterator operator++(int
 		{
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			operator++();
 			return (tmp);
 		}
-		Vector_Reverse_Iterator &operator++()
+		vector_reverse_iterator &operator++()
 		{
-			return (this->Vector_Reverse_Iterator::operator--());
+			return (this->vector_reverse_iterator::operator--());
 		}
-		Vector_Reverse_Iterator operator--(int)
+		vector_reverse_iterator operator--(int)
 		{
-			Vector_Reverse_Iterator tmp(*this);
+			vector_reverse_iterator tmp(*this);
 			operator--();
 			return (tmp);
 		}
-		Vector_Reverse_Iterator &operator--()
+		vector_reverse_iterator &operator--()
 		{
-			return (this->Vector_Reverse_Iterator::operator++());
+			return (this->vector_reverse_iterator::operator++());
 		}
 };
