@@ -6,9 +6,12 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 11:30:01 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 13:29:22 by thverney         ###   ########.fr       */
+/*   Updated: 2021/01/19 15:56:56 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+namespace ft
+{
 
 template<typename T>
 class vector_reverse_iterator
@@ -67,3 +70,5 @@ class vector_reverse_iterator
 			return (this->vector_reverse_iterator::operator++());
 		}
 };
+
+}
