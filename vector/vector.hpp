@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 19:08:56 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/01/19 23:57:34 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ namespace ft
 	{
 		public:
 			vector();
+			vector(size_type n, const value_type& val = value_type());
+			// template <typename InputIterator>
+         	// 	vector(InputIterator first, InputIterator last, typename enable_if<is_iterator<typename InputIterator::iterator_category>::value, int>::type = 0);
+			vector(const vector& x) : allocated_size(0), size_value(0), ptr(NULL) { insert(begin(), x.begin(), x.end()); };
 			~vector();	
 			vector& operator=(const vector &affect)
 			{
