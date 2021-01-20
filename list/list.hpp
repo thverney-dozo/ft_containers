@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/01/19 19:34:43 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/01/20 11:23:49 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ namespace ft
             t_lst		*first;
 			t_lst		*last;
 			size_type	size_value;
-
 
 		public:
 			typedef T 											value_type;	
@@ -90,10 +89,10 @@ namespace ft
 					for (size_type i = 0; i < size_value; i++)
 					{
 						alloc_type.construct(&new_ptr[i], ptr[i]);
-						alloc_type.destroy(&_ptr[i]);
+						alloc_type.destroy(&ptr[i]);
 					}
-					alloc_type.deallocate(_ptr, allocated_size);
-					_ptr = new_ptr;
+					alloc_type.deallocate(ptr, allocated_size);
+					ptr = new_ptr;
 					allocated_size = to_allocate;
 				}
 			};
@@ -136,6 +135,8 @@ namespace ft
 			};
 			void push_back (const value_type& val) 									{ insert(end(), val); };
 			void pop_back()															{ erase(end() - 1); };
+			void push_front (const value_type& val);
+			void pop_front();
 			iterator insert (iterator position, const value_type& val) 
 			{
 				insert(position, 1, val);
@@ -204,6 +205,18 @@ namespace ft
 			void clear()
 			{
 				erase(begin(), end());
+			};
+			void splice (iterator position, list& x)
+			{
+
+			};
+			void splice (iterator position, list& x, iterator i)
+			{
+
+			};
+			void splice (iterator position, list& x, iterator first, iterator last)
+			{
+				
 			};
 	};
 	template <class T>

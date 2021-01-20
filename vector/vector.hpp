@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 23:57:34 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/01/20 11:25:32 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ namespace ft
 					for (size_type i = 0; i < size_value; i++)
 					{
 						alloc_type.construct(&new_ptr[i], ptr[i]);
-						alloc_type.destroy(&_ptr[i]);
+						alloc_type.destroy(&ptr[i]);
 					}
-					alloc_type.deallocate(_ptr, allocated_size);
-					_ptr = new_ptr;
+					alloc_type.deallocate(ptr, allocated_size);
+					ptr = new_ptr;
 					allocated_size = to_allocate;
 				}
 			};
@@ -97,9 +97,9 @@ namespace ft
 			void resize (size_type n, value_type val = value_type())
 			{
 				if (n < size_value)
-					erase(iterator(_ptr + n), end());
+					erase(iterator(ptr + n), end());
 				if (n > size_value)
-					insert(end(), n - _size, val);
+					insert(end(), n - size_value, val);
 				size_value = n;
 			};
 
@@ -115,8 +115,8 @@ namespace ft
 					throw std::out_of_range("Index out of range");
 				return (ptr[n]);
 			};
-			reference front() 										{ return (_ptr[0]); };
-			const_reference front() 					const		{ return (_ptr[0]); };
+			reference front() 										{ return (ptr[0]); };
+			const_reference front() 					const		{ return (ptr[0]); };
 			reference back()										{ return (ptr[size_value -1]); };
 			const_reference back() 						const		{ return (ptr[size_value -1]); };;
 
@@ -156,7 +156,7 @@ namespace ft
 			};
 			void insert(iterator position, iterator first, iterator last)
 			{
-				size_type		n = last._ptr - first._ptr;
+				size_type		n = last.ptr - first.ptr;
 				size_type		new_info = position._ptr - ptr;
 				allocator_type	alloc_type;
 
