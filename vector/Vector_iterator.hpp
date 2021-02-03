@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 15:56:24 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/19 15:56:36 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/03 11:28:48 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ class vector_iterator
 	private:
 
 	public:
+			vector_iterator()
+			{};
+			 vector_iterator(const vector_iterator &other)
+			{
+				*this = other;
+			};
+			 vector_iterator(pointer ptr)
+			: _ptr(ptr)
+			{};
+			 ~vector_iterator()
+			{};
+			
 
 };
 
