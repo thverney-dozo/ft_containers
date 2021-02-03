@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/03 13:43:28 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/03 14:10:01 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,41 +35,28 @@ namespace ft
 			typedef Vector_iterator<value_type const> 			const_iterator;
 			typedef Reverse_vector_iterator<value_type> 		reverse_iterator;
 			typedef Reverse_vector_iterator<value_type const> 	const_reverse_iterator;
-			typedef	std::allocator<value_type>					allocator_type;
 			typedef std::ptrdiff_t 								difference_type;
 			typedef unsigned int 								size_type;
+			typedef Alloc										allocator_type;
 		
 		private:
-			pointer 	ptr;
-			size_t 		size_value;
-			size_t 		allocated_size;
+			pointer 		ptr;
+			size_t 			size_value;
+			size_t 			allocated_size;
+			allocator_type 	_allocator;
 		
 		public:
-			vector();
-			vector(size_type n, const value_type& val = value_type());
-			// template <typename InputIterator>
-         	// 	vector(InputIterator first, InputIterator last, typename enable_if<is_iterator<typename InputIterator::iterator_category>::value, int>::type = 0);
-			vector(const vector& x) : allocated_size(0), size_value(0), ptr(NULL) { insert(begin(), x.begin(), x.end()); };
-			~vector();	
-			vector& operator=(const vector &affect)
-			{
-				clear();
-				insert(begin(), affect.begin(), affect.end());
-				return (*this);
-			};
-
-		public:
-			iterator begin() 									{ return array; };
-			const_iterator begin() 						const 	{ return array; };
-			iterator end() 										{ return (array + size_value); };
-			const_iterator end() 						const 	{ return (array + size_value); };
-			reverse_iterator rbegin() 							{ return (array + size_value - 1); };
-			const_reverse_iterator rbegin() 			const 	{ return (array + size_value - 1); };
-			reverse_iterator rend() 							{ return (array - 1); };
-			const_reverse_iterator rend() 				const 	{ return (array - 1); };
+			iterator begin() 									{ return iterator(ptr); };
+			const_iterator begin() 						const 	{ return const_iterator(ptr); };
+			iterator end() 										{ return iterator(ptr + size_value); };
+			const_iterator end() 						const 	{ return const_iterator(ptr + size_value); };
+			reverse_iterator rbegin() 							{ return reverse_iterator(ptr + size_value - 1); };
+			const_reverse_iterator rbegin() 			const 	{ return const_reverse_iterator(ptr + size_value - 1); };
+			reverse_iterator rend() 							{ return reverse_iterator(ptr - 1); };
+			const_reverse_iterator rend() 				const 	{ return const_reverse_iterator(ptr - 1); };
 
 			size_type size() 							const	{ return (size_value); };
-			size_type max_size() 						const 	{ return (std::numeric_limits<difference_type>::max()) } ;
+			size_type max_size() 						const 	{ return (std::numeric_limits<difference_type>::max()); };
 			size_type capacity() 						const 	{ return (allocated_size); };
 			bool empty() 								const	{ return (!(size_value)); };
 			reference operator[] (size_type n)					{ return (ptr[n]); };
@@ -97,6 +84,7 @@ namespace ft
 				}
 			};
 
+			
 			void resize (size_type n, value_type val = value_type())
 			{
 				if (n < size_value)
@@ -185,11 +173,11 @@ namespace ft
 				allocator_type	alloc_type;
 
 				for (size_type k = 0; k < n; k++)
-					actr.destroy(&ptr[k]);
+					alloc_type.destroy(&ptr[k]);
 				for (size_type i = new_info; i < size_value; i++)
 				{
-					actr.construct(&ptr[i], ptr[i + n]);
-					actr.destroy(&ptr[i + n]);
+					alloc_type.construct(&ptr[i], ptr[i + n]);
+					alloc_type.destroy(&ptr[i + n]);
 				}
 				size_value -= n;
 				return (iterator(ptr + new_info));
@@ -198,11 +186,29 @@ namespace ft
 			{
 				std::swap(ptr, x.ptr);
 				std::swap(size_value, x.size_value);
-				std::swap(allocated_size. x.allocated_size);
+				std::swap(allocated_size, x.allocated_size);
 			};
 			void clear()
 			{
 				erase(begin(), end());
+			};
+		public:
+			vector();
+			// vector(const allocator_type &allocator = allocator_type())
+			//  : size_value(0), allocated_size(0), ptr(0), _allocator(allocator)
+			// {
+			// 	ptr = _allocator.allocate(0);
+			// };
+			vector(size_type n, const value_type& val = value_type());
+			// template <typename InputIterator>
+         	// 	vector(InputIterator first, InputIterator last, typename enable_if<is_iterator<typename InputIterator::iterator_category>::value, int>::type = 0);
+			vector(const vector& x) : allocated_size(0), size_value(0), ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
+			~vector();	
+			vector& operator=(const vector &affect)
+			{
+				clear();
+				insert(begin(), affect.begin(), affect.end());
+				return (*this);
 			};
 	};
 	template <class T>

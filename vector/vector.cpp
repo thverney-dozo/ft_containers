@@ -37,7 +37,7 @@ static void print_vector_reverse(T vec, std::string type)
 static void default_constructor(void)
 {
 	print_header("Default constructor");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
 	check("v1 == v2", v1 == v2);
 	v1.push_back(1);
@@ -52,7 +52,7 @@ static void default_constructor(void)
 static void copy_constructor(void)
 {
 	print_header("Copy");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
 	v1.push_back(1);
 	v1.push_back(2);
@@ -60,7 +60,7 @@ static void copy_constructor(void)
 	v2.push_back(1);
 	v2.push_back(2);
 	v2.push_back(3);
-	ft::Vector<int> v3(v1);
+	ft::vector<int> v3(v1);
 	std::vector<int> v4(v2);
 	v1.push_back(42);
 	v2.push_back(42);
@@ -73,7 +73,7 @@ static void copy_constructor(void)
 static void max_size(void)
 {
 	print_header("Max size");
-	ft::Vector<std::string> v1;
+	ft::vector<std::string> v1;
 	std::vector<std::string> v2;
 	check("v1.max_size() == v2.max_size()", v1.max_size(), v2.max_size());
 	v1.push_back("test");
@@ -84,7 +84,7 @@ static void max_size(void)
 static void resize(void)
 {
 	print_header("Resize");
-	ft::Vector<std::string> v1;
+	ft::vector<std::string> v1;
 	std::vector<std::string> v2;
 	v1.resize(10, "test");
 	v2.resize(10, "test");
@@ -97,7 +97,7 @@ static void resize(void)
 static void access_operator(void)
 {
 	print_header("[] operator, at()");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
 	v1.push_back(1);
 	v1.push_back(2);
@@ -145,7 +145,7 @@ static void access_operator(void)
 static void front_back(void)
 {
 	print_header("Front / Back");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
 	v1.push_back(1);
 	v1.push_back(2);
@@ -161,7 +161,7 @@ static void assign(void)
 {
 	print_header("Assign");
 	std::string test[] = {"Hey", "what's", "up", "?"};
-	ft::Vector<std::string> v1;
+	ft::vector<std::string> v1;
 	std::vector<std::string> v2;
 	v1.assign(test, test + 4);
 	v2.assign(test, test + 4);
@@ -175,7 +175,7 @@ static void insert(void)
 {
 	print_header("Insert");
 	int test[] = {1, 2, 3};
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
 	v1.insert(v1.begin(), 42);
 	v1.insert(v1.end(), 21);
@@ -196,7 +196,7 @@ static void erase(void)
 {
 	print_header("Erase / Clear");
 	std::string test[] = {"Hey", "what's", "up", "?"};
-	ft::Vector<std::string> v1;
+	ft::vector<std::string> v1;
 	std::vector<std::string> v2;
 	v1.assign(test, test + 4);
 	v2.assign(test, test + 4);
@@ -211,9 +211,9 @@ static void erase(void)
 static void swap(void)
 {
 	print_header("Swap");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
-	ft::Vector<int> v3;
+	ft::vector<int> v3;
 	std::vector<int> v4;
 	v1.push_back(1);
 	v1.push_back(2);
@@ -234,9 +234,9 @@ static void swap(void)
 static void operators(void)
 {
 	print_header("Operators");
-	ft::Vector<int> v1;
+	ft::vector<int> v1;
 	std::vector<int> v2;
-	ft::Vector<int> v3;
+	ft::vector<int> v3;
 	std::vector<int> v4;
 	v1.push_back(1);
 	v1.push_back(2);

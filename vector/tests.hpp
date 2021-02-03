@@ -59,7 +59,7 @@ inline void check(std::string name, bool good)
 };
 
 template <typename T>
-bool operator==(ft::Vector<T> &a, std::vector<T> &b)
+bool operator==(ft::vector<T> &a, std::vector<T> &b)
 {
 	if (a.size() != b.size())
 		return (false);
