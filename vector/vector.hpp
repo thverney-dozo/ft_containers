@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/01/20 11:25:32 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/03 13:43:28 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <iostream>
 # include <algorithm>
+# include "Vector_iterator.hpp"
+
 
 namespace ft
 {
@@ -22,6 +24,26 @@ namespace ft
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
 	{
+
+		public:
+			typedef T 											value_type;	
+			typedef T& 											reference;
+			typedef T const 									&const_reference;
+			typedef T* 											pointer;
+			typedef T const 									*const_pointer;
+			typedef Vector_iterator<value_type>					iterator;
+			typedef Vector_iterator<value_type const> 			const_iterator;
+			typedef Reverse_vector_iterator<value_type> 		reverse_iterator;
+			typedef Reverse_vector_iterator<value_type const> 	const_reverse_iterator;
+			typedef	std::allocator<value_type>					allocator_type;
+			typedef std::ptrdiff_t 								difference_type;
+			typedef unsigned int 								size_type;
+		
+		private:
+			pointer 	ptr;
+			size_t 		size_value;
+			size_t 		allocated_size;
+		
 		public:
 			vector();
 			vector(size_type n, const value_type& val = value_type());
@@ -35,26 +57,7 @@ namespace ft
 				insert(begin(), affect.begin(), affect.end());
 				return (*this);
 			};
-		
-		private:
-			pointer 	ptr;
-			size_t 		size_value;
-			size_t 		allocated_size;
 
-		public:
-			typedef T 											value_type;	
-			typedef T& 											reference;
-			typedef T const 									&reference;
-			typedef T* 											pointer;
-			typedef T const 									*pointer;
-			typedef vector_iterator<value_type>					iterator;
-			typedef vector_iterator<value_type const> 			const_iterator;
-			typedef vector_reverse_iterator<value_type> 		reverse_iterator;
-			typedef vector_reverse_iterator<value_type const> 	const_reverse_iterator;
-			typedef	std::allocator<value_type>					allocator_type;
-			typedef std::ptrdiff_t 								difference_type;
-			typedef unsigned int 								size_type;
-		
 		public:
 			iterator begin() 									{ return array; };
 			const_iterator begin() 						const 	{ return array; };
@@ -109,7 +112,7 @@ namespace ft
 					throw std::out_of_range("Index out of range");
 				return (ptr[n]);
 			};
-			const_reference at (size_type n) const;
+			const_reference at (size_type n) const
 			{
 				if (n >= size_value && n >= 0)
 					throw std::out_of_range("Index out of range");
