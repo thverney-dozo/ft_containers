@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 15:56:24 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/03 11:28:48 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/03 11:29:21 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,33 @@ class vector_iterator
 			{};
 			 ~vector_iterator()
 			{};
-			
-
+			vector_iterator &operator=(const vector_iterator &other)
+			{
+				_ptr = other._ptr;
+				return (*this);
+			};
+			vector_iterator &operator++()
+			{
+				_ptr++;
+				return (*this);
+			};
+			vector_iterator &operator--()
+			{
+				_ptr--;
+				return (*this);
+			};
+			vector_iterator operator++(int)
+			{
+				vector_iterator tmp(*this);
+				operator++();
+				return (tmp);
+			};
+			vector_iterator operator--(int)
+			{
+				vector_iterator tmp(*this);
+				operator--();
+				return (tmp);
+			};
 };
 
 }
