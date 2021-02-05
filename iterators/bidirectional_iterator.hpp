@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:31 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/05 15:46:48 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:52:49 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,18 @@ namespace ft
 	class bidirectional_iterator
 	{
 		public:
+
+			typedef long int		difference_type;
+			typedef T				value_type;
+			typedef size_t			size_type;
+
 			typedef typename is_it_const<B, T&, const T&>::_type		reference;
 			typedef typename is_it_const<B, T*, const T*>::_type		pointer;
-		
+			typedef T*													non_const_pointer;
+
+			bidirec_iterator(non_const_pointer val = 0) : _ptr(val) {}
+
+
 		s default-constructible, copy-constructible, copy-assignable and destructible	X a;
 		X b(a);
 		b = a;
@@ -39,7 +48,7 @@ namespace ft
 		a--
 		*a--
 		protected:
-			nonConstPointer	_val;
+			nonConstPointer	_ptr;
 	};
 }
 
