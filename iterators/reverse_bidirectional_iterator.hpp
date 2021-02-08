@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:38 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 17:09:57 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:10:34 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace ft
 			typedef T*													non_const_pointer;
 
 			reverse_bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
-			reverse_bidirec_iterator(const bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
             reverse_bidirectional_iterator(const reverse_bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+			reverse_bidirectional_iterator(const bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
 			reverse_bidirectional_iterator& operator=(const reverse_bidirectional_iterator& affect)
 			{
 				if (this != &affect)
