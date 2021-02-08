@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:31 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 17:09:44 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 22:08:14 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 # define BIDIRECTIONAL_ITERATOR_HPP
 
 # include "is_const_it.hpp"
-# include "reverse_bidirectional_iterator.hpp"
 
 namespace ft
 {
+
+	template<typename T, bool B>
+	class reverse_bidirectional_iterator;
+
 	template<typename T, bool B>
 	class bidirectional_iterator
 	{
