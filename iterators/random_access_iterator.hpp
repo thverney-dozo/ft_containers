@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:34 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 22:31:30 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 23:24:31 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,25 @@ namespace ft
 			{ cursor(this->_ptr, nb, ADD); return (*this); }
 
 			random_access_iterator operator+(int nb) const
-			{ random_access_iterator it(*this); cursor(it._ptr, nb, ADD); return (it); }
+			{ ft::random_access_iterator it(*this); cursor(it._ptr, nb, ADD); return (it); }
             
 			random_access_iterator& operator-=(int nb)
 			{ cursor(this->_ptr, nb, SUB); return (*this); }
             
 			random_access_iterator operator-(int nb) const
-			{ random_access_iterator it(*this); cursor(it._ptr, nb, SUB); return (it); }
+			{ ft::random_access_iterator it(*this); cursor(it._ptr, nb, SUB); return (it); }
             
             reference operator[](int nb) const
             { value_type* tmp(this->_ptr); cursor(tmp, nb, ADD); return (*tmp); }
+
+
+            // maybe this proto friend random_access_iterator operator+(int nb, const random_access_iterator& it)
+            random_access_iterator operator+(int nb, const random_access_iterator& it)
+			{ ft::random_access_iterator newIt(it); return (newIt += nb); }
+
+			// maybe this protorandom_access_iterator operator-(int nb, const random_access_iterator& it)
+			random_access_iterator operator-(int nb, const random_access_iterator& it)
+			{ ft::random_access_iterator newIt(it); return (newIt -= nb); }
 
         private:
 
