@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:38 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 16:43:00 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 16:44:42 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 namespace ft
 {
 	template<typename T, bool B>
-	class bidirectional_iterator
+	class reverse_bidirectional_iterator
 	{
 		public:
 
@@ -28,25 +28,25 @@ namespace ft
 			typedef typename is_it_const<B, T*, const T*>::_type		pointer;
 			typedef T*													non_const_pointer;
 
-			bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
-			bidirectional_iterator(const bidirec_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
-			bidirectional_iterator& operator=(const bidirectional_iterator& affect)
+			reverse_bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
+			reverse_bidirectional_iterator(const bidirec_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+			reverse_bidirectional_iterator& operator=(const reverse_bidirectional_iterator& affect)
 			{
 				if (this != &affect)
 					_ptr = affect._ptr;
 				return (*this);
 			}
-			~bidirectional_iterator() {}
+			~reverse_bidirectional_iterator() {}
 			
 			nonConstPointer	getNConstPtr() const						{ return _ptr; }
-			bool operator==(const bidirectional_iterator& it) const	{ return (it._ptr == _ptr); }
-			bool operator!=(const bidirectional_iterator& it) const	{ return (it._ptr != _ptr); }
+			bool operator==(const reverse_bidirectional_iterator& it) const	{ return (it._ptr == _ptr); }
+			bool operator!=(const reverse_bidirectional_iterator& it) const	{ return (it._ptr != _ptr); }
 			reference operator*()									{ return (*_ptr); }
 			pointer operator->() const								{ return (_ptr); }
-			bidirectional_iterator& operator++()					{ ++_ptr; return (*this); }
-			bidirectional_iterator operator++(int)					{ bidirectional_iterator ret(*this); ++(*this); return (ret); };
-			bidirectional_iterator& operator--()					{ --_ptr; return (*this); }
-			bidirectional_iterator operator--(int)					{ bidirectional_iterator ret(*this); --(*this); return (ret); };
+			reverse_bidirectional_iterator& operator++()					{ --_ptr; return (*this); }
+			reverse_bidirectional_iterator operator++(int)					{ reverse_bidirectional_iterator ret(*this); ++(*this); return (ret); };
+			reverse_bidirectional_iterator& operator--()					{ ++_ptr; return (*this); }
+			reverse_bidirectional_iterator operator--(int)					{ reverse_bidirectional_iterator ret(*this); --(*this); return (ret); };
 			
 		protected:
 			nonConstPointer	_ptr;
