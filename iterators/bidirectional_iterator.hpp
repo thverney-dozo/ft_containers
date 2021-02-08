@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:31 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 16:26:21 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 16:36:21 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ namespace ft
 
 
 		s default-constructible, copy-constructible, copy-assignable and destructible	X a;
+		bidirectional_iterator(const bidirec_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
 		~bidirectional_iterator() {}
 
 		X b(a);

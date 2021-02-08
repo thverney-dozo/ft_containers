@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_const_it.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:24:51 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/05 15:46:41 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/08 16:30:32 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 
 namespace ft
 {
-	template <bool is_it_const, typename _not_const, typename _const>
+	template <bool is_it_const, typename not_const, typename is_const>
 	struct choose_if_const {};
 
-	template <typename _not_const, typename _const>
-	struct choose_if_const <false, _not_const, _const>
+	template <typename not_const, typename is_const>
+	struct choose_if_const <false, not_const, is_const>
 	{
-		typedef _not_const _type;
+		typedef is_const _type;
 	};
 
-	template <typename _not_const, typename _const>
-	struct choose_if_const <true, _not_const, _const>
+	template <typename not_const, typename is_const>
+	struct choose_if_const <true, not_const, is_const>
 	{
-		typedef _not_const _type;
+		typedef not_const _type;
 	};
 }
 
