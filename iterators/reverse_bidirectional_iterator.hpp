@@ -6,15 +6,20 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:38 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 16:44:42 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:09:57 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REVERSE_BIDIRECTIONAL_ITERATOR_HPP
 # define REVERSE_BIDIRECTIONAL_ITERATOR_HPP
 
+# include "is_const_it.hpp"
+
 namespace ft
 {
+    template<typename T, bool B>
+	class bidirectional_iterator;
+
 	template<typename T, bool B>
 	class reverse_bidirectional_iterator
 	{
@@ -29,7 +34,8 @@ namespace ft
 			typedef T*													non_const_pointer;
 
 			reverse_bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
-			reverse_bidirectional_iterator(const bidirec_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+			reverse_bidirec_iterator(const bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+            reverse_bidirectional_iterator(const reverse_bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
 			reverse_bidirectional_iterator& operator=(const reverse_bidirectional_iterator& affect)
 			{
 				if (this != &affect)
@@ -38,7 +44,7 @@ namespace ft
 			}
 			~reverse_bidirectional_iterator() {}
 			
-			nonConstPointer	getNConstPtr() const						{ return _ptr; }
+			non_const_pointer	getNConstPtr() const						{ return _ptr; }
 			bool operator==(const reverse_bidirectional_iterator& it) const	{ return (it._ptr == _ptr); }
 			bool operator!=(const reverse_bidirectional_iterator& it) const	{ return (it._ptr != _ptr); }
 			reference operator*()									{ return (*_ptr); }
@@ -49,7 +55,7 @@ namespace ft
 			reverse_bidirectional_iterator operator--(int)					{ reverse_bidirectional_iterator ret(*this); --(*this); return (ret); };
 			
 		protected:
-			nonConstPointer	_ptr;
+			non_const_pointer	_ptr;
 	};
 }
 

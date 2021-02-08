@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:31 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 16:39:03 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/08 17:09:44 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BIDIRECTIONAL_ITERATOR_HPP
 
 # include "is_const_it.hpp"
+# include "reverse_bidirectional_iterator.hpp"
 
 namespace ft
 {
@@ -31,7 +32,8 @@ namespace ft
 			typedef T*													non_const_pointer;
 
 			bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
-			bidirectional_iterator(const bidirec_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+			bidirectional_iterator(const bidirectional_tionaliterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
+			bidirectional_iterator(const ft::reverse_bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }
 			bidirectional_iterator& operator=(const bidirectional_iterator& affect)
 			{
 				if (this != &affect)
@@ -40,7 +42,7 @@ namespace ft
 			}
 			~bidirectional_iterator() {}
 			
-			nonConstPointer	getNConstPtr() const						{ return _ptr; }
+			non_const_pointer	getNConstPtr() const						{ return _ptr; }
 			bool operator==(const bidirectional_iterator& it) const	{ return (it._ptr == _ptr); }
 			bool operator!=(const bidirectional_iterator& it) const	{ return (it._ptr != _ptr); }
 			reference operator*()									{ return (*_ptr); }
@@ -51,7 +53,7 @@ namespace ft
 			bidirectional_iterator operator--(int)					{ bidirectional_iterator ret(*this); --(*this); return (ret); };
 			
 		protected:
-			nonConstPointer	_ptr;
+			non_const_pointer	_ptr;
 	};
 }
 
