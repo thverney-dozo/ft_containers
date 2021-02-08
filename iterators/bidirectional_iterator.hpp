@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bidirectional_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:31 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/05 15:52:49 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/08 16:21:32 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,23 @@ namespace ft
 			typedef typename is_it_const<B, T*, const T*>::_type		pointer;
 			typedef T*													non_const_pointer;
 
-			bidirec_iterator(non_const_pointer val = 0) : _ptr(val) {}
+			bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
 
 
 		s default-constructible, copy-constructible, copy-assignable and destructible	X a;
+		~bidirectional_iterator() {}
+
 		X b(a);
 		b = a;
-		a == b
-		a != b
+		// bool operator==(const bidirectional_iterator& it) const	{ return (it._ptr == _ptr); }
+		// bool operator!=(const bidirectional_iterator& it) const	{ return (it._ptr != _ptr); }
 		*a
 		a->m
 		*a = t
-		++a
-		a++
-		*a++
-		--a
-		a--
-		*a--
+		bidirectional_iterator& operator++()		{ ++_ptr; return (*this); }
+		bidirectional_iterator operator++(int)		{ bidirectional_iterator ret(*this); ++(*this); return (ret); };
+		bidirectional_iterator& operator--()		{ --_ptr; return (*this); }
+		bidirectional_iterator operator--(int)		{ bidirectional_iterator ret(*this); --(*this); return (ret); };
 		protected:
 			nonConstPointer	_ptr;
 	};
