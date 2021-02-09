@@ -6,17 +6,19 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:34 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 23:24:31 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/09 01:16:27 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// 1
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 # define RANDOM_ACCESS_ITERATOR_HPP
 
 #include "bidirectional_iterator.hpp"
 
-# define ADD 1
-# define SUB 0
+# define PLUS 1
+# define MINUS 0
 
 namespace ft
 {
@@ -50,28 +52,28 @@ namespace ft
             bool operator>=(const random_access_iterator& it) const	{ return (it._ptr <= this->_ptr); }
 
             random_access_iterator& operator+=(int nb)
-			{ cursor(this->_ptr, nb, ADD); return (*this); }
+			{ cursor(this->_ptr, nb, PLUS); return (*this); }
 
 			random_access_iterator operator+(int nb) const
-			{ ft::random_access_iterator it(*this); cursor(it._ptr, nb, ADD); return (it); }
+			{ random_access_iterator it(*this); cursor(it._ptr, nb, PLUS); return (it); }
             
 			random_access_iterator& operator-=(int nb)
-			{ cursor(this->_ptr, nb, SUB); return (*this); }
+			{ cursor(this->_ptr, nb, MINUS); return (*this); }
             
 			random_access_iterator operator-(int nb) const
-			{ ft::random_access_iterator it(*this); cursor(it._ptr, nb, SUB); return (it); }
+			{ random_access_iterator it(*this); cursor(it._ptr, nb, MINUS); return (it); }
             
             reference operator[](int nb) const
-            { value_type* tmp(this->_ptr); cursor(tmp, nb, ADD); return (*tmp); }
+            { value_type* tmp(this->_ptr); cursor(tmp, nb, PLUS); return (*tmp); }
 
 
             // maybe this proto friend random_access_iterator operator+(int nb, const random_access_iterator& it)
             random_access_iterator operator+(int nb, const random_access_iterator& it)
-			{ ft::random_access_iterator newIt(it); return (newIt += nb); }
+			{ random_access_iterator newIt(it); return (newIt += nb); }
 
 			// maybe this protorandom_access_iterator operator-(int nb, const random_access_iterator& it)
 			random_access_iterator operator-(int nb, const random_access_iterator& it)
-			{ ft::random_access_iterator newIt(it); return (newIt -= nb); }
+			{ random_access_iterator newIt(it); return (newIt -= nb); }
 
         private:
 
@@ -79,7 +81,7 @@ namespace ft
             {
                 int shift;
 
-                if (sign == ADD)
+                if (sign == PLUS)
                     shift = nb > 0 ? shift = 1: shift = -1;
                 else
                     shift = nb > 0 ? shift = -1: shift = 1;

@@ -6,9 +6,11 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:24:51 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/08 16:30:32 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/09 00:08:29 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// 0
 
 #ifndef IS_CONST_IT_HPP
 # define IS_CONST_IT_HPP

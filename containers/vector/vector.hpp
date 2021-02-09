@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/03 14:10:01 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/09 01:09:34 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <iostream>
 # include <algorithm>
-# include "Vector_iterator.hpp"
-
+# include "iterators/random_access_iterator.hpp"
+# include "iterators/rev_random_access_iterator.hpp"
 
 namespace ft
 {
@@ -31,36 +31,37 @@ namespace ft
 			typedef T const 									&const_reference;
 			typedef T* 											pointer;
 			typedef T const 									*const_pointer;
-			typedef Vector_iterator<value_type>					iterator;
-			typedef Vector_iterator<value_type const> 			const_iterator;
-			typedef Reverse_vector_iterator<value_type> 		reverse_iterator;
-			typedef Reverse_vector_iterator<value_type const> 	const_reverse_iterator;
 			typedef std::ptrdiff_t 								difference_type;
 			typedef unsigned int 								size_type;
 			typedef Alloc										allocator_type;
+
+			typedef typename ft::random_iterator<T, false>		iterator;
+			typedef typename ft::random_iterator<T, true>		const_iterator;
+			typedef typename ft::rev_random_iterator<T, false>	reverse_iterator;
+			typedef typename ft::rev_random_iterator<T, true>	const_reverse_iterator;
 		
 		private:
-			pointer 		ptr;
+			pointer 		_ptr;
 			size_t 			size_value;
 			size_t 			allocated_size;
 			allocator_type 	_allocator;
 		
 		public:
-			iterator begin() 									{ return iterator(ptr); };
-			const_iterator begin() 						const 	{ return const_iterator(ptr); };
-			iterator end() 										{ return iterator(ptr + size_value); };
-			const_iterator end() 						const 	{ return const_iterator(ptr + size_value); };
-			reverse_iterator rbegin() 							{ return reverse_iterator(ptr + size_value - 1); };
-			const_reverse_iterator rbegin() 			const 	{ return const_reverse_iterator(ptr + size_value - 1); };
-			reverse_iterator rend() 							{ return reverse_iterator(ptr - 1); };
-			const_reverse_iterator rend() 				const 	{ return const_reverse_iterator(ptr - 1); };
+			iterator begin() 									{ return iterator(_ptr); };
+			const_iterator begin() 						const 	{ return const_iterator(_ptr); };
+			iterator end() 										{ return iterator(_ptr + size_value); };
+			const_iterator end() 						const 	{ return const_iterator(_ptr + size_value); };
+			reverse_iterator rbegin() 							{ return reverse_iterator(_ptr + size_value - 1); };
+			const_reverse_iterator rbegin() 			const 	{ return const_reverse_iterator(_ptr + size_value - 1); };
+			reverse_iterator rend() 							{ return reverse_iterator(_ptr - 1); };
+			const_reverse_iterator rend() 				const 	{ return const_reverse_iterator(_ptr - 1); };
 
 			size_type size() 							const	{ return (size_value); };
 			size_type max_size() 						const 	{ return (std::numeric_limits<difference_type>::max()); };
 			size_type capacity() 						const 	{ return (allocated_size); };
 			bool empty() 								const	{ return (!(size_value)); };
-			reference operator[] (size_type n)					{ return (ptr[n]); };
-			const_reference operator[] (size_type n) 	const 	{ return (ptr[n]); };
+			reference operator[] (size_type n)					{ return (_ptr[n]); };
+			const_reference operator[] (size_type n) 	const 	{ return (_ptr[n]); };
 			void reserve (size_type n)
 			{
 				pointer			new_ptr;
@@ -75,11 +76,11 @@ namespace ft
 					new_ptr = alloc_type.allocate(to_allocate);
 					for (size_type i = 0; i < size_value; i++)
 					{
-						alloc_type.construct(&new_ptr[i], ptr[i]);
-						alloc_type.destroy(&ptr[i]);
+						alloc_type.construct(&new_ptr[i], _ptr[i]);
+						alloc_type.destroy(&_ptr[i]);
 					}
-					alloc_type.deallocate(ptr, allocated_size);
-					ptr = new_ptr;
+					alloc_type.deallocate(_ptr, allocated_size);
+					_ptr = new_ptr;
 					allocated_size = to_allocate;
 				}
 			};
@@ -88,7 +89,7 @@ namespace ft
 			void resize (size_type n, value_type val = value_type())
 			{
 				if (n < size_value)
-					erase(iterator(ptr + n), end());
+					erase(iterator(_ptr + n), end());
 				if (n > size_value)
 					insert(end(), n - size_value, val);
 				size_value = n;
@@ -98,18 +99,18 @@ namespace ft
 			{
 				if (n >= size_value && n >= 0)
 					throw std::out_of_range("Index out of range");
-				return (ptr[n]);
+				return (_ptr[n]);
 			};
 			const_reference at (size_type n) const
 			{
 				if (n >= size_value && n >= 0)
 					throw std::out_of_range("Index out of range");
-				return (ptr[n]);
+				return (_ptr[n]);
 			};
-			reference front() 										{ return (ptr[0]); };
-			const_reference front() 					const		{ return (ptr[0]); };
-			reference back()										{ return (ptr[size_value -1]); };
-			const_reference back() 						const		{ return (ptr[size_value -1]); };;
+			reference front() 										{ return (_ptr[0]); };
+			const_reference front() 					const		{ return (_ptr[0]); };
+			reference back()										{ return (_ptr[size_value -1]); };
+			const_reference back() 						const		{ return (_ptr[size_value -1]); };;
 
 			void assign(const_iterator first, const_iterator last)
 			{
@@ -131,34 +132,34 @@ namespace ft
 			};
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				size_type		new_info = position.ptr - ptr;
+				size_type		new_info = position._ptr - _ptr;
 				allocator_type	alloc_type;
 
 				reserve(size_value + n);
 
 				for (size_type i = size_value - 1; i > new_info - 1; i--)
 				{
-					alloc_type.construct(&ptr[i + n], ptr[i]);
-					alloc_type.destroy(&ptr[i]);
+					alloc_type.construct(&_ptr[i + n], _ptr[i]);
+					alloc_type.destroy(&_ptr[i]);
 				}
 				for (size_type k = 0; k < n; k++)
-					alloc_type.construct(&ptr[k + new_info], val);
+					alloc_type.construct(&_ptr[k + new_info], val);
 				size_value += n;
 			};
 			void insert(iterator position, iterator first, iterator last)
 			{
-				size_type		n = last.ptr - first.ptr;
-				size_type		new_info = position._ptr - ptr;
+				size_type		n = last._ptr - first._ptr;
+				size_type		new_info = position._ptr - _ptr;
 				allocator_type	alloc_type;
 
 				reserve(size_value + n);
 				for (size_type i = size_value - 1; i > new_info - 1; i--)
 				{
-					alloc_type.construct(&ptr[i + n], ptr[i]);
-					alloc_type.destroy(&ptr[i]);
+					alloc_type.construct(&_ptr[i + n], _ptr[i]);
+					alloc_type.destroy(&_ptr[i]);
 				}
 				for (size_type k = 0; k < n; k++)
-					alloc_type.construct(&ptr[k + new_info], *first++);
+					alloc_type.construct(&_ptr[k + new_info], *first++);
 				size_value += n;
 
 			};
@@ -168,23 +169,23 @@ namespace ft
 			};
 			iterator erase (iterator first, iterator last)
 			{
-				size_type		n = last.ptr - first.ptr;
-				size_type		new_info = first.ptr - ptr;
+				size_type		n = last._ptr - first._ptr;
+				size_type		new_info = first._ptr - _ptr;
 				allocator_type	alloc_type;
 
 				for (size_type k = 0; k < n; k++)
-					alloc_type.destroy(&ptr[k]);
+					alloc_type.destroy(&_ptr[k]);
 				for (size_type i = new_info; i < size_value; i++)
 				{
-					alloc_type.construct(&ptr[i], ptr[i + n]);
-					alloc_type.destroy(&ptr[i + n]);
+					alloc_type.construct(&_ptr[i], _ptr[i + n]);
+					alloc_type.destroy(&_ptr[i + n]);
 				}
 				size_value -= n;
-				return (iterator(ptr + new_info));
+				return (iterator(_ptr + new_info));
 			};
 			void swap (vector& x)
 			{
-				std::swap(ptr, x.ptr);
+				std::swap(_ptr, x._ptr);
 				std::swap(size_value, x.size_value);
 				std::swap(allocated_size, x.allocated_size);
 			};
@@ -192,17 +193,16 @@ namespace ft
 			{
 				erase(begin(), end());
 			};
+
 		public:
-			vector();
-			// vector(const allocator_type &allocator = allocator_type())
-			//  : size_value(0), allocated_size(0), ptr(0), _allocator(allocator)
-			// {
-			// 	ptr = _allocator.allocate(0);
-			// };
+			explicit vector(const allocator_type &allocator = allocator_type()) :
+					size_value(0), allocated_size(0), _allocator(allocator)
+			{_ptr = _allocator.allocate(0); };
+
 			vector(size_type n, const value_type& val = value_type());
 			// template <typename InputIterator>
          	// 	vector(InputIterator first, InputIterator last, typename enable_if<is_iterator<typename InputIterator::iterator_category>::value, int>::type = 0);
-			vector(const vector& x) : allocated_size(0), size_value(0), ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
+			vector(const vector& x) : allocated_size(0), size_value(0), _ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
 			~vector();	
 			vector& operator=(const vector &affect)
 			{
