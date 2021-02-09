@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:34 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 01:16:27 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/09 01:33:13 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ namespace ft
 
 
             // maybe this proto friend random_access_iterator operator+(int nb, const random_access_iterator& it)
-            random_access_iterator operator+(int nb, const random_access_iterator& it)
+            friend random_access_iterator operator+(int nb, const random_access_iterator& it)
 			{ random_access_iterator newIt(it); return (newIt += nb); }
 
 			// maybe this protorandom_access_iterator operator-(int nb, const random_access_iterator& it)
-			random_access_iterator operator-(int nb, const random_access_iterator& it)
+			friend random_access_iterator operator-(int nb, const random_access_iterator& it)
 			{ random_access_iterator newIt(it); return (newIt -= nb); }
 
         private:

@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 01:09:34 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/09 01:36:36 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <iostream>
 # include <algorithm>
-# include "iterators/random_access_iterator.hpp"
-# include "iterators/rev_random_access_iterator.hpp"
+# include "../../iterators/random_access_iterator.hpp"
+# include "../../iterators/rev_random_access_iterator.hpp"
 
 namespace ft
 {
@@ -35,10 +35,10 @@ namespace ft
 			typedef unsigned int 								size_type;
 			typedef Alloc										allocator_type;
 
-			typedef typename ft::random_iterator<T, false>		iterator;
-			typedef typename ft::random_iterator<T, true>		const_iterator;
-			typedef typename ft::rev_random_iterator<T, false>	reverse_iterator;
-			typedef typename ft::rev_random_iterator<T, true>	const_reverse_iterator;
+			typedef typename ft::random_access_iterator<T, false>		iterator;
+			typedef typename ft::random_access_iterator<T, true>		const_iterator;
+			typedef typename ft::rev_random_access_iterator<T, false>	reverse_iterator;
+			typedef typename ft::rev_random_access_iterator<T, true>	const_reverse_iterator;
 		
 		private:
 			pointer 		_ptr;
