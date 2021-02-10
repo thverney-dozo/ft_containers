@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 01:36:36 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/09 17:41:19 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ namespace ft
 				}
 			};
 
-			
 			void resize (size_type n, value_type val = value_type())
 			{
 				if (n < size_value)
