@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:38 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 01:19:28 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/10 16:28:25 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ namespace ft
 			typedef T				value_type;
 			typedef size_t			size_type;
 
-			typedef typename choose_if_const<B, T&, const T&>::_type		reference;
-			typedef typename choose_if_const<B, T*, const T*>::_type		pointer;
+			typedef typename choose_if_const<B, T&, const T&>::_type	reference;
+			typedef typename choose_if_const<B, T*, const T*>::_type	pointer;
 			typedef T*													non_const_pointer;
+			typedef std::input_iterator_tag 							iterator_category;
+
 
 			reverse_bidirectional_iterator(non_const_pointer val = 0) : _ptr(val) {}
             reverse_bidirectional_iterator(const reverse_bidirectional_iterator<T, false>& cpy) { _ptr = cpy.getNConstPtr(); }

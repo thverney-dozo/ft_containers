@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:23:34 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 01:33:13 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/10 18:24:31 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ namespace ft
 			typedef typename ft::bidirectional_iterator<T, B>::pointer			    pointer;
 			typedef typename ft::bidirectional_iterator<T, B>::non_const_pointer	non_const_pointer;
         	typedef typename ft::bidirectional_iterator<T, B>						bidirectional_iterator;
+            typedef typename ft::bidirectional_iterator<T, B>::iterator_category    iterator_category;
+
 
             random_access_iterator(non_const_pointer val = 0) : bidirectional_iterator(val) {}
             random_access_iterator(const random_access_iterator<T, false>& cpy) : 

@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 22:37:13 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/09 22:52:09 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/10 18:33:50 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,79 @@
 # define CHECKERS_HPP
 namespace ft
 {
-    template <bool B>
-    struct enable_if {};
-
-    template <>
-    struct enable_if<true> {
-        typedef int type;
+    template <bool B, class T = void>
+    struct enable_if {} ;
+    
+    template <class T>
+    struct enable_if<true, T> {
+        typedef void void_t;
+        typedef T type;
     };
 
     template <typename T>
-	struct is_alphanum { static const bool value = false; };
+	struct is_not_it { static const bool value = false; };
 
 	template <>
-	struct is_alphanum<bool> { static const bool value = true; };
+	struct is_not_it<bool> { static const bool value = true; };
 	
 	template <>
-	struct is_alphanum<char> { static const bool value = true; };
+	struct is_not_it<char> { static const bool value = true; };
 
     template <>
-    struct is_alphanum<wchar_t> {static const bool value = true; };
+    struct is_not_it<wchar_t> {static const bool value = true; };
     
 	template <>
-	struct is_alphanum<short> { static const bool value = true; };
+	struct is_not_it<short> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<int> { static const bool value = true; };
+	struct is_not_it<int> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<long> { static const bool value = true; };
+	struct is_not_it<long> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<long long> { static const bool value = true; };
+	struct is_not_it<long long> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<unsigned char> { static const bool value = true; };
+	struct is_not_it<unsigned char> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<unsigned short> { static const bool value = true; };
+	struct is_not_it<unsigned short> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<unsigned int> { static const bool value = true; };
+	struct is_not_it<unsigned int> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<unsigned long> { static const bool value = true; };
+	struct is_not_it<unsigned long> { static const bool value = true; };
 
 	template <>
-	struct is_alphanum<unsigned long long> { static const bool value = true; };
+	struct is_not_it<unsigned long long> { static const bool value = true; };
 
     template <>
-    struct is_alphanum<float> { static const bool value = true; };
+    struct is_not_it<float> { static const bool value = true; };
 
     template <>
-    struct is_alphanum<double> { static const bool value = true; };
+    struct is_not_it<double> { static const bool value = true; };
     
     template <>
-    struct is_alphanum<long double> {static const bool value = true; };
+    struct is_not_it<long double> {static const bool value = true; };
+
+    template <typename T, typename U>
+    struct is_pair { static const bool value = false; };
+
+    template <typename T>
+    struct is_pair<T,T> { static const bool value = true; };
+
+    template <class T = void, bool B = !ft::is_not_it<T>::value >
+    struct is_input_iterator {};
+
+    template <class T>
+    struct is_input_iterator<T, true> {
+        static const bool value =ft::is_pair<typename T::iterator_category, std::input_iterator_tag>::value ||
+                            ft::is_pair<typename T::iterator_category, std::forward_iterator_tag>::value ||
+                            ft::is_pair<typename T::iterator_category, std::bidirectional_iterator_tag>::value ||
+                            ft::is_pair<typename T::iterator_category, std::random_access_iterator_tag>::value;
+    };
 }
 
 #endif

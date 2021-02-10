@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 17:41:19 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/10 19:09:33 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <algorithm>
 # include "../../iterators/random_access_iterator.hpp"
 # include "../../iterators/rev_random_access_iterator.hpp"
+# include "../../iterators/checkers.hpp"
 
 namespace ft
 {
@@ -42,74 +43,107 @@ namespace ft
 		
 		private:
 			pointer 		_ptr;
-			size_t 			size_value;
-			size_t 			allocated_size;
+			size_t 			_size_value;
+			size_t 			_allocated_size;
 			allocator_type 	_allocator;
 		
 		public:
+
+		/*
+			   ___    _____    ___     ___     ___    _____    ___     ___     ___   
+			  |_ _|  |_   _|  | __|   | _ \   /   \  |_   _|  / _ \   | _ \   / __|  
+			   | |     | |    | _|    |   /   | - |    | |   | (_) |  |   /   \__ \  
+			  |___|   _|_|_   |___|   |_|_\   |_|_|   _|_|_   \___/   |_|_\   |___/  
+			_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
+			"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'                               
+		*/
 			iterator begin() 									{ return iterator(_ptr); };
 			const_iterator begin() 						const 	{ return const_iterator(_ptr); };
-			iterator end() 										{ return iterator(_ptr + size_value); };
-			const_iterator end() 						const 	{ return const_iterator(_ptr + size_value); };
-			reverse_iterator rbegin() 							{ return reverse_iterator(_ptr + size_value - 1); };
-			const_reverse_iterator rbegin() 			const 	{ return const_reverse_iterator(_ptr + size_value - 1); };
+			iterator end() 										{ return iterator(_ptr + _size_value); };
+			const_iterator end() 						const 	{ return const_iterator(_ptr + _size_value); };
+			reverse_iterator rbegin() 							{ return reverse_iterator(_ptr + _size_value - 1); };
+			const_reverse_iterator rbegin() 			const 	{ return const_reverse_iterator(_ptr + _size_value - 1); };
 			reverse_iterator rend() 							{ return reverse_iterator(_ptr - 1); };
 			const_reverse_iterator rend() 				const 	{ return const_reverse_iterator(_ptr - 1); };
 
-			size_type size() 							const	{ return (size_value); };
+		/*
+		  	   ___     ___      ___    ___     ___     ___    _____  __   __ 
+			  / __|   /   \    | _ \  /   \   / __|   |_ _|  |_   _| \ \ / / 
+		     | (__    | - |    |  _/  | - |  | (__     | |     | |    \ V /  
+			  \___|   |_|_|   _|_|_   |_|_|   \___|   |___|   _|_|_   _|_|_  
+			_|"""""|_|"""""|_| """ |_|"""""|_|"""""|_|"""""|_|"""""|_| """ | 
+			"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+		*/
+			size_type size() 							const	{ return (_size_value); };
 			size_type max_size() 						const 	{ return (std::numeric_limits<difference_type>::max()); };
-			size_type capacity() 						const 	{ return (allocated_size); };
-			bool empty() 								const	{ return (!(size_value)); };
-			reference operator[] (size_type n)					{ return (_ptr[n]); };
-			const_reference operator[] (size_type n) 	const 	{ return (_ptr[n]); };
+			void resize (size_type n, value_type val = value_type())
+			{
+				if (n < _size_value)
+					erase(iterator(_ptr + n), end());
+				if (n > _size_value)
+					insert(end(), n - _size_value, val);
+				_size_value = n;
+			};
+			size_type capacity() 						const 	{ return (_allocated_size); };
+			bool empty() 								const	{ return (!(_size_value)); };
 			void reserve (size_type n)
 			{
 				pointer			new_ptr;
 				allocator_type	alloc_type;
 				size_type		to_allocate;
 			
-				if (n > allocated_size)
+				if (n > _allocated_size)
 				{
-					to_allocate = allocated_size ? allocated_size : 32;
+					to_allocate = _allocated_size ? _allocated_size : 32;
 					while (to_allocate < n)
 						to_allocate *= 2;
 					new_ptr = alloc_type.allocate(to_allocate);
-					for (size_type i = 0; i < size_value; i++)
+					for (size_type i = 0; i < _size_value; i++)
 					{
 						alloc_type.construct(&new_ptr[i], _ptr[i]);
 						alloc_type.destroy(&_ptr[i]);
 					}
-					alloc_type.deallocate(_ptr, allocated_size);
+					alloc_type.deallocate(_ptr, _allocated_size);
 					_ptr = new_ptr;
-					allocated_size = to_allocate;
+					_allocated_size = to_allocate;
 				}
 			};
 
-			void resize (size_type n, value_type val = value_type())
-			{
-				if (n < size_value)
-					erase(iterator(_ptr + n), end());
-				if (n > size_value)
-					insert(end(), n - size_value, val);
-				size_value = n;
-			};
-
+			/*
+			       ___     _       ___   __  __    ___    _  _    _____             ___     ___     ___     ___     ___     ___   
+				  | __|   | |     | __| |  \/  |  | __|  | \| |  |_   _|           /   \   / __|   / __|   | __|   / __|   / __|  
+				  | _|    | |__   | _|  | |\/| |  | _|   | .` |    | |             | - |  | (__   | (__    | _|    \__ \   \__ \  
+				  |___|   |____|  |___| |_|__|_|  |___|  |_|\_|   _|_|_            |_|_|   \___|   \___|   |___|   |___/   |___/  
+				_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| {======|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""| 
+				"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'./o--000'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+			*/
+			reference operator[] (size_type n)					{ return (_ptr[n]); };
+			const_reference operator[] (size_type n) 	const 	{ return (_ptr[n]); };
 			reference at (size_type n)
 			{
-				if (n >= size_value && n >= 0)
+				if (n >= _size_value && n >= 0)
 					throw std::out_of_range("Index out of range");
 				return (_ptr[n]);
 			};
 			const_reference at (size_type n) const
 			{
-				if (n >= size_value && n >= 0)
+				if (n >= _size_value && n >= 0)
 					throw std::out_of_range("Index out of range");
 				return (_ptr[n]);
 			};
 			reference front() 										{ return (_ptr[0]); };
 			const_reference front() 					const		{ return (_ptr[0]); };
-			reference back()										{ return (_ptr[size_value -1]); };
-			const_reference back() 						const		{ return (_ptr[size_value -1]); };;
+			reference back()										{ return (_ptr[_size_value -1]); };
+			const_reference back() 						const		{ return (_ptr[_size_value -1]); };;
+
+			/*
+				 __  __    ___     ___     ___      ___    ___     ___     ___     ___   
+				|  \/  |  / _ \   |   \   |_ _|    | __|  |_ _|   | __|   | _ \   / __|  
+				| |\/| | | (_) |  | |) |   | |     | _|    | |    | _|    |   /   \__ \  
+				|_|__|_|  \___/   |___/   |___|   _|_|_   |___|   |___|   |_|_\   |___/  
+				_|"""""|_|"""""|_|"""""|_|"""""|_| """ |_|"""""|_|"""""|_|"""""|_|"""""| 
+				"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+			*/
 
 			void assign(const_iterator first, const_iterator last)
 			{
@@ -134,16 +168,16 @@ namespace ft
 				size_type		new_info = position._ptr - _ptr;
 				allocator_type	alloc_type;
 
-				reserve(size_value + n);
+				reserve(_size_value + n);
 
-				for (size_type i = size_value - 1; i > new_info - 1; i--)
+				for (size_type i = _size_value - 1; i > new_info - 1; i--)
 				{
 					alloc_type.construct(&_ptr[i + n], _ptr[i]);
 					alloc_type.destroy(&_ptr[i]);
 				}
 				for (size_type k = 0; k < n; k++)
 					alloc_type.construct(&_ptr[k + new_info], val);
-				size_value += n;
+				_size_value += n;
 			};
 			void insert(iterator position, iterator first, iterator last)
 			{
@@ -151,15 +185,15 @@ namespace ft
 				size_type		new_info = position._ptr - _ptr;
 				allocator_type	alloc_type;
 
-				reserve(size_value + n);
-				for (size_type i = size_value - 1; i > new_info - 1; i--)
+				reserve(_size_value + n);
+				for (size_type i = _size_value - 1; i > new_info - 1; i--)
 				{
 					alloc_type.construct(&_ptr[i + n], _ptr[i]);
 					alloc_type.destroy(&_ptr[i]);
 				}
 				for (size_type k = 0; k < n; k++)
 					alloc_type.construct(&_ptr[k + new_info], *first++);
-				size_value += n;
+				_size_value += n;
 
 			};
 			iterator erase (iterator position)
@@ -174,34 +208,55 @@ namespace ft
 
 				for (size_type k = 0; k < n; k++)
 					alloc_type.destroy(&_ptr[k]);
-				for (size_type i = new_info; i < size_value; i++)
+				for (size_type i = new_info; i < _size_value; i++)
 				{
 					alloc_type.construct(&_ptr[i], _ptr[i + n]);
 					alloc_type.destroy(&_ptr[i + n]);
 				}
-				size_value -= n;
+				_size_value -= n;
 				return (iterator(_ptr + new_info));
 			};
 			void swap (vector& x)
 			{
 				std::swap(_ptr, x._ptr);
-				std::swap(size_value, x.size_value);
-				std::swap(allocated_size, x.allocated_size);
+				std::swap(_size_value, x._size_value);
+				std::swap(_allocated_size, x._allocated_size);
 			};
 			void clear()
 			{
 				erase(begin(), end());
 			};
 
+		/*		  _____ ____  _____  _      _____ ______ _   _   ______ ____  _____  __  __ 
+				 / ____/ __ \|  __ \| |    |_   _|  ____| \ | | |  ____/ __ \|  __ \|  \/  |
+				| |   | |  | | |__) | |      | | | |__  |  \| | | |__ | |  | | |__) | \  / |
+				| |   | |  | |  ___/| |      | | |  __| | . ` | |  __|| |  | |  _  /| |\/| |
+				| |___| |__| | |    | |____ _| |_| |____| |\  | | |   | |__| | | \ \| |  | |
+				 \_____\____/|_|    |______|_____|______|_| \_| |_|    \____/|_|  \_|_|  |_|
+        */
 		public:
+
 			explicit vector(const allocator_type &allocator = allocator_type()) :
-					size_value(0), allocated_size(0), _allocator(allocator)
+					_size_value(0), _allocated_size(0), _allocator(allocator)
 			{_ptr = _allocator.allocate(0); };
 
 			vector(size_type n, const value_type& val = value_type());
-			// template <typename InputIterator>
-         	// 	vector(InputIterator first, InputIterator last, typename enable_if<is_iterator<typename InputIterator::iterator_category>::value, int>::type = 0);
-			vector(const vector& x) : allocated_size(0), size_value(0), _ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
+			template <class InputIterator>
+				vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+						typename ft::enable_if<ft::is_input_iterator<InputIT>::value, InputIT>::void_t) :
+						_allocator(alloc), _size_value(0)
+				{
+					InputIterator tmp(first);
+					while (tmp++ != last)
+						_size_value++;
+					
+					_allocated_size = _size_value;
+					_ptr = _allocator.allocate(_allocated_size);
+
+					for (int i = 0; first != last; ++first, ++i)
+						_allocator.construct(&_ptr[i], *first);
+				}
+			vector(const vector& x) : _allocated_size(0), _size_value(0), _ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
 			~vector();	
 			vector& operator=(const vector &affect)
 			{
