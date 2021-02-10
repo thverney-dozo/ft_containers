@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/10 19:13:24 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/10 20:23:29 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 namespace ft
 {
-
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
 	{
@@ -144,15 +143,16 @@ namespace ft
 				_|"""""|_|"""""|_|"""""|_|"""""|_| """ |_|"""""|_|"""""|_|"""""|_|"""""| 
 				"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
 			*/
-
-			void assign(const_iterator first, const_iterator last)
+			template <class InputIterator>
+			void assign(InputIterator first, InputIterator last),
+					typename ft::enable_if<ft::is_input_iterator<InputIT>::value, InputIT>::void_t)
 			{
-				clear();
+				this->~vector();
 				insert(begin(), first, last);
 			};
 			void assign (size_type n, const value_type& val)
 			{
-				clear();
+				this->~vector();
 				insert(begin(), n, val);
 			};
 			void push_back (const value_type& val) 									{ insert(end(), val); };
@@ -227,20 +227,32 @@ namespace ft
 				erase(begin(), end());
 			};
 
-		/*		  _____ ____  _____  _      _____ ______ _   _   ______ ____  _____  __  __ 
-				 / ____/ __ \|  __ \| |    |_   _|  ____| \ | | |  ____/ __ \|  __ \|  \/  |
-				| |   | |  | | |__) | |      | | | |__  |  \| | | |__ | |  | | |__) | \  / |
-				| |   | |  | |  ___/| |      | | |  __| | . ` | |  __|| |  | |  _  /| |\/| |
-				| |___| |__| | |    | |____ _| |_| |____| |\  | | |   | |__| | | \ \| |  | |
-				 \_____\____/|_|    |______|_____|______|_| \_| |_|    \____/|_|  \_|_|  |_|
+		/*		 ██████╗ ██████╗ ██████╗ ██╗     ██╗███████╗███╗   ██╗    ███████╗ ██████╗ ██████╗ ███╗   ███╗
+				██╔════╝██╔═══██╗██╔══██╗██║     ██║██╔════╝████╗  ██║    ██╔════╝██╔═══██╗██╔══██╗████╗ ████║
+				██║     ██║   ██║██████╔╝██║     ██║█████╗  ██╔██╗ ██║    █████╗  ██║   ██║██████╔╝██╔████╔██║
+				██║     ██║   ██║██╔═══╝ ██║     ██║██╔══╝  ██║╚██╗██║    ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
+				╚██████╗╚██████╔╝██║     ███████╗██║███████╗██║ ╚████║    ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+				 ╚═════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
+                                                                                              
         */
 		public:
-
+			// Default constructor
 			explicit vector(const allocator_type &allocator = allocator_type()) :
 					_size_value(0), _allocated_size(0), _allocator(allocator)
-			{_ptr = _allocator.allocate(0); };
-
-			vector(size_type n, const value_type& val = value_type());
+			{
+				_ptr = _allocator.allocate(0);
+			};
+			// Fill constructor
+			explicit vector(size_type n, const value_type& val = value_type(),
+							const allocator_type& alloc = allocator_type()) :
+					_alloc(alloc), _size(n), _allocated_size(n)
+			{
+				_ptr = _alloc.allocate(_allocated_size);
+				
+				for (size_type i = 0; i < _size_value; ++i)
+					_alloc.construct(&_ptr[i], val);
+			}
+			// Range of iterators contructor
 			template <class InputIterator>
 				vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 						typename ft::enable_if<ft::is_input_iterator<InputIT>::value, InputIT>::void_t) :
@@ -256,14 +268,25 @@ namespace ft
 					for (int i = 0; first != last; ++first, ++i)
 						_allocator.construct(&_ptr[i], *first);
 				}
-			vector(const vector& x) : _allocated_size(0), _size_value(0), _ptr(NULL) { vector::insert(begin(), x.begin(), x.end()); };
-			~vector();	
+			// Copy constructor
+			vector(const vector& x) : _allocated_size(0), _size_value(0), _ptr(NULL)
+			{ 
+				vector::insert(begin(), x.begin(), x.end());
+			};
+			// Affectation overload
 			vector& operator=(const vector &affect)
 			{
 				clear();
 				insert(begin(), affect.begin(), affect.end());
 				return (*this);
 			};
+			// Deep destructor
+			~vector()
+			{
+				for (iterator it = begin(); it != end(); ++it)
+					_alloc.destroy(&(*it));
+				_alloc.deallocate(_vector, _capacity);
+			}	
 	};
 	template <class T>
 	bool operator==(const vector<T>& a, const vector<T>& b)
