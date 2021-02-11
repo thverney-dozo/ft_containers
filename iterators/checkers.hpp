@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 22:37:13 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/10 18:33:50 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/11 22:42:52 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,26 @@
 # define CHECKERS_HPP
 namespace ft
 {
+    template <class InputIT>
+    size_t distance(InputIT start, InputIT end)
+    {
+        size_t i = 0;
+
+        while (start != end)
+        {
+            i++;
+            start++;
+        }
+        return (i);
+    }
+
+    //      ENABLE_IF 
+    
     template <bool B, class T = void>
     struct enable_if {} ;
     
     template <class T>
     struct enable_if<true, T> {
-        typedef void void_t;
         typedef T type;
     };
 
@@ -87,6 +101,11 @@ namespace ft
                             ft::is_pair<typename T::iterator_category, std::bidirectional_iterator_tag>::value ||
                             ft::is_pair<typename T::iterator_category, std::random_access_iterator_tag>::value;
     };
+    template <class T>
+    struct is_input_iterator<T*, true>
+    { static const bool value = true; };
+
+
 }
 
 #endif

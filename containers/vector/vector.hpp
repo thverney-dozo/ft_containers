@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/10 20:23:29 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/11 21:29:31 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
 			typedef T* 											pointer;
 			typedef T const 									*const_pointer;
 			typedef std::ptrdiff_t 								difference_type;
-			typedef unsigned int 								size_type;
+			typedef std::size_t 								size_type;
 			typedef Alloc										allocator_type;
 
 			typedef typename ft::random_access_iterator<T, false>		iterator;
@@ -144,9 +144,9 @@ namespace ft
 				"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
 			*/
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last),
-					typename ft::enable_if<ft::is_input_iterator<InputIT>::value, InputIT>::void_t)
+			void assign(InputIterator first, InputIterator last)
 			{
+				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type enable;
 				this->~vector();
 				insert(begin(), first, last);
 			};
@@ -179,8 +179,10 @@ namespace ft
 					alloc_type.construct(&_ptr[k + new_info], val);
 				_size_value += n;
 			};
-			void insert(iterator position, iterator first, iterator last)
+			template <class InputIterator>
+			void insert(iterator position, InputIterator first, InputIterator last)
 			{
+				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type enable;
 				size_type		n = last._ptr - first._ptr;
 				size_type		new_info = position._ptr - _ptr;
 				allocator_type	alloc_type;
@@ -194,7 +196,6 @@ namespace ft
 				for (size_type k = 0; k < n; k++)
 					alloc_type.construct(&_ptr[k + new_info], *first++);
 				_size_value += n;
-
 			};
 			iterator erase (iterator position)
 			{
@@ -218,9 +219,10 @@ namespace ft
 			};
 			void swap (vector& x)
 			{
-				std::swap(_ptr, x._ptr);
-				std::swap(_size_value, x._size_value);
-				std::swap(_allocated_size, x._allocated_size);
+				std::swap(this->_ptr, x._ptr);
+				std::swap(this->_size_value, x._size_value);
+				std::swap(this->_allocated_size, x._allocated_size);
+				std::swap(this->_allocator, x._allocator);
 			};
 			void clear()
 			{
@@ -232,8 +234,7 @@ namespace ft
 				██║     ██║   ██║██████╔╝██║     ██║█████╗  ██╔██╗ ██║    █████╗  ██║   ██║██████╔╝██╔████╔██║
 				██║     ██║   ██║██╔═══╝ ██║     ██║██╔══╝  ██║╚██╗██║    ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
 				╚██████╗╚██████╔╝██║     ███████╗██║███████╗██║ ╚████║    ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
-				 ╚═════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
-                                                                                              
+				 ╚═════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝    ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝                                                                  
         */
 		public:
 			// Default constructor
@@ -245,19 +246,19 @@ namespace ft
 			// Fill constructor
 			explicit vector(size_type n, const value_type& val = value_type(),
 							const allocator_type& alloc = allocator_type()) :
-					_alloc(alloc), _size(n), _allocated_size(n)
+					_allocator(alloc), _size_value(n), _allocated_size(n)
 			{
-				_ptr = _alloc.allocate(_allocated_size);
+				_ptr = _allocator.allocate(_allocated_size);
 				
 				for (size_type i = 0; i < _size_value; ++i)
-					_alloc.construct(&_ptr[i], val);
+					_allocator.construct(&_ptr[i], val);
 			}
 			// Range of iterators contructor
 			template <class InputIterator>
-				vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-						typename ft::enable_if<ft::is_input_iterator<InputIT>::value, InputIT>::void_t) :
+				vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) :
 						_allocator(alloc), _size_value(0)
 				{
+					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type enable;
 					InputIterator tmp(first);
 					while (tmp++ != last)
 						_size_value++;
@@ -284,8 +285,8 @@ namespace ft
 			~vector()
 			{
 				for (iterator it = begin(); it != end(); ++it)
-					_alloc.destroy(&(*it));
-				_alloc.deallocate(_vector, _capacity);
+					_allocator.destroy(&(*it));
+				_allocator.deallocate(_ptr, _allocated_size);
 			}	
 	};
 	template <class T>
