@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
+/*   Updated: 2021/02/13 05:12:12 by aeoithd          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tests.hpp"
 
 template <typename T>
@@ -154,7 +166,7 @@ static void front_back(void)
 	v2.push_back(2);
 	v2.push_back(3);
 	check("v1.front() == v2.front()", v1.front(), v2.front());
-	check("v1.back() == v2.back()", v1.front(), v2.front());
+	check("v1.back() == v2.back()", v1.back(), v2.back());
 }
 
 static void assign(void)
@@ -178,18 +190,23 @@ static void insert(void)
 	ft::vector<int> v1;
 	std::vector<int> v2;
 	v1.insert(v1.begin(), 42);
-	v1.insert(v1.end(), 21);
-	v1.insert(v1.begin(), 10);
-	v1.insert(v1.begin() + 1, 11);
-	v1.insert(v1.begin() + 2, (size_t)3, 0);
-	v1.insert(v1.begin() + 1, test, test + 3);
 	v2.insert(v2.begin(), 42);
+	check("v1 == v2 part 1", v1 == v2);
 	v2.insert(v2.end(), 21);
+	v1.insert(v1.end(), 21);
+	check("v1 == v2 part 2", v1 == v2);
+	v1.insert(v1.begin(), 10);
 	v2.insert(v2.begin(), 10);
+	check("v1 == v2 part 3", v1 == v2);
+	v1.insert(v1.begin() + 1, 11);
 	v2.insert(v2.begin() + 1, 11);
+	check("v1 == v2 part 4", v1 == v2);
+	v1.insert(v1.begin() + 2, (size_t)3, 0);
 	v2.insert(v2.begin() + 2, (size_t)3, 0);
+	check("v1 == v2 part 5", v1 == v2);
+	v1.insert(v1.begin() + 1, test, test + 3);
 	v2.insert(v2.begin() + 1, test, test + 3);
-	check("v1 == v2", v1 == v2);
+	check("v1 == v2 part 6", v1 == v2);
 }
 
 static void erase(void)

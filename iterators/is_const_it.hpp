@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 13:24:51 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/09 00:08:29 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/11 23:47:55 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ namespace ft
 	template <typename not_const, typename is_const>
 	struct choose_if_const <false, not_const, is_const>
 	{
-		typedef is_const _type;
+		typedef not_const _type;
 	};
 
 	template <typename not_const, typename is_const>
 	struct choose_if_const <true, not_const, is_const>
 	{
-		typedef not_const _type;
+		typedef is_const _type;
 	};
 }
 

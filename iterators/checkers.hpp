@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 22:37:13 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/11 22:42:52 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/13 01:41:17 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace ft
     size_t distance(InputIT start, InputIT end)
     {
         size_t i = 0;
-
+        
         while (start != end)
         {
             i++;
@@ -92,7 +92,8 @@ namespace ft
     struct is_pair<T,T> { static const bool value = true; };
 
     template <class T = void, bool B = !ft::is_not_it<T>::value >
-    struct is_input_iterator {};
+    struct is_input_iterator{};
+    // { static const bool value = false; };
 
     template <class T>
     struct is_input_iterator<T, true> {
