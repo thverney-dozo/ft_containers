@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:12 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/15 10:16:52 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 10:20:50 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
         public:
             // default constructor
             explicit queue (const container_type& cont = container_type()) :
-					c(ctnr) {}
+					c(cont) {}
             // Copy constructor
             queue(const queue &cpy) { *this = cpy; };
             // Affectation

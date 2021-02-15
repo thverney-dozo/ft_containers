@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tests.hpp                                          :+:      :+:    :+:   */
+/*   tests_helpers.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/15 09:58:36 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 10:20:30 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <iostream>
 # include "containers/vector/vector.hpp"
 # include "containers/stack/stack.hpp"
+# include "containers/queue/queue.hpp"
 
 # ifdef __linux__
 #  define RESET "\e[0m"
