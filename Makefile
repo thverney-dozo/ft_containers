@@ -17,14 +17,14 @@ tests_helpers.hpp \
 main.hpp \
 
 CONTAINERS_PATH = containers/
-CONTAINERS_FILE = vector/vector.hpp \
-queue/queue.hpp \
-stack/stack.hpp \
+CONTAINERS_FILE = vector.hpp \
+queue.hpp \
+stack.hpp \
 
 SRC = ${addprefix ${CONTAINERS_PATH}, $(CONTAINERS_FILE)}\
 	  ${addprefix ${ITERATORS_PATH}, $(ITERATORS_FILE)}\
 	  ${addprefix ${TEST_PATH}, $(TEST_FILE)}
-OBJS = ${SRC:%.c=%.o}
+OBJS = ${SRC:%.cpp=%.o}
 
 all: ${NAME}
 
@@ -44,14 +44,12 @@ $(NAME): ${OBJS}
 
 %.o : %.c
 	@/bin/echo -n [+]
-	@gcc $(CFLAGS) -c ${HEADERS} $< -o $@
+	@clang $(CFLAGS) -c ${HEADERS} $< -o $@
 
 clean:
-	@rm -f ${OBJS} ${BONUS}
+	@rm -f ${OBJS}
 
 fclean: clean
 	@rm -f ${NAME}
-
-bonus :
 
 re: clean all
