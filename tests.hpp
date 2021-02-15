@@ -6,11 +6,56 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/15 10:02:29 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 10:19:26 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tests.hpp"
+#include "tests_helpers.hpp"
+
+/*
+ .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
+| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+| |    ___       | || | _____  _____ | || |  _________   | || | _____  _____ | || |  _________   | |
+| |  .'   '.     | || ||_   _||_   _|| || | |_   ___  |  | || ||_   _||_   _|| || | |_   ___  |  | |
+| | /  .-.  \    | || |  | |    | |  | || |   | |_  \_|  | || |  | |    | |  | || |   | |_  \_|  | |
+| | | |   | |    | || |  | '    ' |  | || |   |  _|  _   | || |  | '    ' |  | || |   |  _|  _   | |
+| | \  `-'  \_   | || |   \ `--' /   | || |  _| |___/ |  | || |   \ `--' /   | || |  _| |___/ |  | |
+| |  `.___.\__|  | || |    `.__.'    | || | |_________|  | || |    `.__.'    | || | |_________|  | |
+| |              | || |              | || |              | || |              | || |              | |
+| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+ '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
+*/
+
+static void constructors_queue(void)
+{
+	print_header("Constructor");
+	ft::queue<int> q1;
+	std::queue<int> q2;
+	check("q1.size() == q2.size()", q1.size() == q2.size());
+	check("q1.empty() == q2.empty()", q1.empty() == q2.empty());
+}
+
+static void front_back_queue(void)
+{
+	print_header("Front / Back / Push / Pop");
+	ft::queue<int> q1;
+	std::queue<int> q2;
+	q1.push(0);
+	q1.push(1);
+	q1.push(2);
+	q2.push(0);
+	q2.push(1);
+	q2.push(2);
+	check("q1.size() == q2.size()", q1.size() == q2.size());
+	check("q1.empty() == q2.empty()", q1.empty() == q2.empty());
+	check("q1.front() == q2.front()", q1.front(), q2.front());
+	check("q1.back() == q2.back()", q1.back(), q2.back());
+	q1.pop();
+	q2.pop();
+	check("q1.size() == q2.size()", q1.size() == q2.size());
+	check("q1.front() == q2.front()", q1.front(), q2.front());
+	check("q1.back() == q2.back()", q1.back(), q2.back());
+}
 
 /*
  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
@@ -345,6 +390,11 @@ static void operators_vector(void)
 
 void	test_vector(void)
 {
+	//QUEUE
+	print_header_container("Queue");
+	constructors_queue();
+	front_back_queue();
+
 	//STACK
 	print_header_container("Stack");
 	constructors_stack();
