@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/13 03:28:10 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 11:09:48 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <iostream>
 # include <algorithm>
-# include "../../iterators/random_access_iterator.hpp"
-# include "../../iterators/rev_random_access_iterator.hpp"
-# include "../../iterators/checkers.hpp"
+# include "../iterators/random_access_iterator.hpp"
+# include "../iterators/rev_random_access_iterator.hpp"
+# include "../iterators/checkers.hpp"
 
 namespace ft
 {
