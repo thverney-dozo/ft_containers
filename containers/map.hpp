@@ -3,10 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/05 12:47:09 by thverney         ###   ########.fr       */
+/*   Updated: 2021/02/15 11:36:29 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MAP_HPP
+# define MAP_HPP
+
+namespace ft
+{
+    
+
+}
+
+#endif
