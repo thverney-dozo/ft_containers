@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:16 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/15 09:54:17 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 10:08:06 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ namespace ft
 			typedef Container	container_type;
 			typedef size_t		size_type;
 
+		protected:
+			container_type c;
 		
 		public:
 
@@ -59,8 +61,6 @@ namespace ft
 			};
 			// destructor
 			~stack() {};
-		protected:
-			container_type c;
         
 	        friend bool operator==(const stack& a, const stack& b)	{ return a.c == b.c; }
 			friend bool operator!=(const stack& a, const stack& b)	{ return a.c != b.c; }
