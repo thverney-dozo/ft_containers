@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:12 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/15 10:15:33 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/15 10:16:52 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ namespace ft
 			};
             // Destructor
 			~queue() {};
+
             bool empty()                    const { return (c.empty()); };
 			size_type size()                const { return (c.size()); };
 			value_type &front()                   { return (c.front()); };
@@ -47,7 +48,14 @@ namespace ft
 			value_type &back()                    { return (c.back()); };
 			const value_type &back()        const { return (c.back()); };
 			void push(const value_type &val)      { return (c.push_back(val)); };
-			void pop()                            {c.pop_front(); };
+			void pop()                            { c.pop_front(); };
+
+            friend bool operator==(const queue& a, const queue& b)	{ return a.c == b.c; }
+			friend bool operator!=(const queue& a, const queue& b)	{ return a.c != b.c; }
+			friend bool operator<(const queue& a, const queue& b)	{ return a.c < b.c; }
+			friend bool operator<=(const queue& a, const queue& b)	{ return a.c <= b.c; }
+			friend bool operator>(const queue& a, const queue& b)	{ return a.c > b.c; }
+			friend bool operator>=(const queue& a, const queue& b)	{ return a.c >= b.c; }
     };
 };
 
