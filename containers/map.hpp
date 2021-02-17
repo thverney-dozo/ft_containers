@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/16 00:21:25 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 01:33:10 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,13 @@
 # include <functional>
 # include <limits>
 # include <utility>
+# include "../iterators/utils.hpp"
 
 namespace ft
 {
     template <class Key, class T, class Compare=std::less<Key>, class Alloc = std::allocator<std::pair<const Key, T> > >
 	class map
     {
-        private:
-
-        	template <class Key, class T>
-                struct Node
-                {
-                    std::pair<Key, T> pair;
-                    Node *parent;
-                    Node *left;
-                    Node *right;
-                    bool end;
-                };
         public:
             typedef Key                                                 key_type;
 			typedef T                                                   mapped_type;
@@ -50,7 +40,7 @@ namespace ft
 			typedef ReverseMapIterator<key_type, mapped_type>           reverse_iterator;
 			typedef ConstMapIterator<key_type, mapped_type>             const_iterator;
 			typedef ConstReverseMapIterator<key_type, mapped_type>      const_reverse_iterator;
-            
+        
         public:
             explicit map (const key_compare& comp = key_compare(),
                     const allocator_type& alloc = allocator_type()){};
@@ -97,7 +87,28 @@ namespace ft
             pair<iterator,iterator>             equal_range (const key_type& k) {};
             allocator_type get_allocator() const {};
 
+
     };
+    template <class Key, class T, class Compare, class Alloc>
+	void swap(ft::Map<Key, T, Compare, Alloc> &x, ft::Map<Key, T, Compare, Alloc> &y) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator==(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator!=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator>(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator<(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator>=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	
+    template <class Key, class T, class Compare, class Alloc>
+	bool operator<=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
 
 }
 

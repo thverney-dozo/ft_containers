@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/15 11:34:32 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 03:55:14 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <algorithm>
+# include "../iterators/utils.hpp"
 
 namespace ft
 {
@@ -23,28 +24,94 @@ namespace ft
 	class list
 	{
 		public:
-			list();
-			~list();	
-			list& operator=(const list &affect)
-			{
-			};
-
+			typedef T 										value_type;
+			typedef Alloc 									allocator_type;
+			typedef T& 										reference;
+			typedef const T& 								const_reference;
+			typedef T* 										pointer;
+			typedef const T* 								const_pointer;
+			typedef unsigned long 							size_type;
+			typedef Node<value_type>* 						node;
+			typedef ListIterator<value_type> 				iterator;
+			typedef ConstListIterator<value_type> 			const_iterator;
+			typedef ReverseListIterator<value_type> 		reverse_iterator;
+			typedef ConstReverseListIterator<value_type> 	const_reverse_iterator;
 		
 		private:
-            t_lst		*first;
-			t_lst		*last;
-			size_type	size_value;
+            node			_firstN;
+			node			_lastN;
+			size_type		_size_value;
+			allocator_type 	_alloc;
 
+			node _newNode(node prev, node next, value_type val)
+			{
+				node nNew = new Node<value_type>();
+				nNew->info = val;
+				nNew->prev = prev;
+				nNew->next = next;
+				return (nNew);
+			};
+			void _initialize_list()
+			{
+				_firstN = _newNode(0, 0, value_type);
+				_lastN = _newNode(_firstN, 0, value_type);
+				_firstN->next = _lastN;
+			};
 		
 		public:
-			iterator begin(void) {};
-			const_iterator begin(void) const {};
-			iterator end(void) {};
-			const_iterator end(void) const {};
-			reverse_iterator rbegin(void) {};
-			const_reverse_iterator rbegin(void) const {};
-			reverse_iterator rend(void) {};
-			const_reverse_iterator rend(void) const {};
+		
+			explicit list(const allocator_type &alloc=allocator_type())
+				: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+			{
+				_initialize_list();
+			};
+
+			explicit list(size_type n, const value_type &value = value_type(), const allocator_type &alloc=allocator_type())
+			: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+			{
+				_initialize_list();
+				assign(n, value);
+			};
+
+			template <class InputIterator>
+				list(InputIterator first, InputIterator last, const allocator_type &alloc=allocator_type())
+					: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+				{
+					_initialize_list();
+					assign(first, last);
+
+				};
+
+			list(const list &cpy)
+			: _firstN(0), _lastN(0), _alloc(cpy._alloc), _size_value(0)
+			{
+				_initialize_list();
+				*this = cpy;
+			};
+
+			~list()
+			{
+				clear();
+				delete _firstN;
+				delete _lastN;
+			};
+
+			list &operator=(const list &affect)
+			{
+				clear();
+				assign(affect.begin(), affect.end());
+				_size_value = affect._size_value;
+				return (*this);
+			};
+
+			iterator begin() 						{ return (iterator(_firstN->next)); };
+			const_iterator begin() 			const 	{ return (const_iterator(_firstN->next)); };
+			iterator end() 							{ return (iterator(_lastN)); };
+			const_iterator end() 			const 	{ return (const_iterator(_lastN)); };
+			reverse_iterator rbegin() 				{ return (reverse_iterator(_lastN->prev)); };
+			const_reverse_iterator rbegin() const 	{ return (const_reverse_iterator(_lastN->prev)); };
+			reverse_iterator rend() 				{ return (reverse_iterator(_firstN)); };
+			const_reverse_iterator rend() 	const 	{ return (const_reverse_iterator(_firstN)); };
 
 			bool empty(void) const
 			{
