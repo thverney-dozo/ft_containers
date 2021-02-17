@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 04:04:27 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 04:36:24 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ namespace ft
 				_lastN = _newNode(_firstN, 0, value_type);
 				_firstN->next = _lastN;
 			};
+
+			void unlinkNode(Node *delN)
+			{
+				delN->prev->next = delN->next;
+				delN->next->prev = delN->prev;
+				delete delN;
+				_size_value -= 1;
+			}
 		
 		public:
 		
@@ -130,15 +138,33 @@ namespace ft
 			};
 			void push_front(const value_type &value)
 			{
+				node pshfnode = _newNode(_firstN, _firstN->next, value);
+				_firstN->next->prev = pshfnode;
+				_firstN->next = pshfnode;
+				_size_value++;
 			};
 			void pop_front()
 			{
+				node ppfnode = _firstN->next->next;
+				delete _firstN->next;
+				_firstN->next = ppfnode;
+				ppfnode->prev = _firstN;
+				_size_value--;
 			};
 			void push_back(const value_type &value)
 			{
+				node pshbnode = _newNode(_lastN->prev, _lastN, value);
+				_lastN->prev->next = pshbnode;
+				_lastN->prev = pshbnode;
+				_size_value++;
 			}
 			void pop_back()
 			{
+				node ppbnode = _lastN->prev->prev;
+				delete _lastN->prev;
+				_lastN->prev = ppbnode;
+				ppbnode->next = _lastN;
+				_size_value--;
 			};
 			iterator insert(iterator position, const value_type &value)
 			{
@@ -156,22 +182,26 @@ namespace ft
 			iterator erase(iterator first, iterator last)
 			{
 			};
-			void swap(List &x)
+			void swap(list &x)
 			{
 			};
 			void resize(size_type n, value_type value = value_type())
 			{
 			};
-			void clear(void)
+			void clear()
+			{
+				node delN = _firstN;
+				while (delN->next != _lastN)
+					unlinkNode(delN->next);
+				_size_value = 0;
+			};
+			void splice(iterator position, list &x)
 			{
 			};
-			void splice(iterator position, List &x)
+			void splice(iterator position, list &x, iterator i)
 			{
 			};
-			void splice(iterator position, List &x, iterator i)
-			{
-			};
-			void splice(iterator position, List &x, iterator first, iterator last)
+			void splice(iterator position, list &x, iterator first, iterator last)
 			{
 			};
 			void remove(const value_type &value)
@@ -188,11 +218,11 @@ namespace ft
 			void unique(BinaryPredicate binary_pred)
 			{
 			};
-			void merge(List &x)
+			void merge(list &x)
 			{
 			};
 			template <class Compare>
-			void merge(List &x, Compare comp)
+			void merge(list &x, Compare comp)
 			{
 			};
 			void sort(void)
