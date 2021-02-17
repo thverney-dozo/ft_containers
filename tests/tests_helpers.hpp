@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/15 11:09:30 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 12:43:47 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "../containers/vector.hpp"
 # include "../containers/stack.hpp"
 # include "../containers/queue.hpp"
+# include "../containers/list.hpp"
 
 # ifdef __linux__
 #  define RESET "\e[0m"

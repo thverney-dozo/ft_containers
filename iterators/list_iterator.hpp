@@ -6,12 +6,15 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 05:12:55 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 06:33:36 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 13:26:11 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIST_ITERATOR_HPP
 # define LIST_ITERATOR_HPP
+
+# include "is_const_it.hpp"
+# include "checkers.hpp"
 
 namespace ft
 {
@@ -20,13 +23,15 @@ namespace ft
 	{
 		public:
 
-			typedef long int										difference_type;
-			typedef T												value_type;
-			typedef size_t											size_type;
+			typedef long int										        difference_type;
+			typedef T												        value_type;
+			typedef size_t											        size_type;
 			
-			typedef typename chooseConst<B, T&, const T&>::type		reference;
-			typedef typename chooseConst<B, T*, const T*>::type		pointer;
-			typedef Node*											non_const_pointer;
+			typedef typename choose_if_const<B, T&, const T&>::_type		reference;
+			typedef typename choose_if_const<B, T*, const T*>::_type		pointer;
+			typedef Node*											        non_const_pointer;
+            typedef std::input_iterator_tag 							    iterator_category;
+
 
 			list_iterator(non_const_pointer node = 0) : _ptr(node) {}
 			list_iterator(const list_iterator<T, Node, false>& cpy) { _ptr = cpy.getNConstPtr(); }
@@ -74,13 +79,14 @@ namespace ft
 	{
 		public:
 
-			typedef long int										difference_type;
-			typedef T												value_type;
-			typedef size_t											size_type;
+			typedef long int										        difference_type;
+			typedef T												        value_type;
+			typedef size_t											        size_type;
 			
-			typedef typename chooseConst<B, T&, const T&>::type		reference;
-			typedef typename chooseConst<B, T*, const T*>::type		pointer;
-			typedef Node*											non_const_pointer;
+			typedef typename choose_if_const<B, T&, const T&>::_type		reference;
+			typedef typename choose_if_const<B, T*, const T*>::_type		pointer;
+			typedef Node*											        non_const_pointer;
+            typedef std::input_iterator_tag 							    iterator_category;
 
 			reverse_list_iterator(non_const_pointer node = 0) : _ptr(node) {}
 			reverse_list_iterator(const reverse_list_iterator<T, Node, false>& cpy) { _ptr = cpy.getNConstPtr(); }

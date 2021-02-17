@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 08:14:20 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 14:20:33 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ namespace ft
 			typedef typename ft::reverse_list_iterator<T, Node, true> 	const_reverse_iterator;
 		
 		private:
+
             node			_firstN;
 			node			_lastN;
 			size_type		_size_value;
@@ -55,7 +56,7 @@ namespace ft
 
 			node _newNode(node prev, node next, value_type val)
 			{
-				node nNew = new Node<value_type>();
+				node nNew = new Node;
 				nNew->info = val;
 				nNew->prev = prev;
 				nNew->next = next;
@@ -63,8 +64,8 @@ namespace ft
 			};
 			void _initialize_list()
 			{
-				_firstN = _newNode(0, 0, value_type);
-				_lastN = _newNode(_firstN, 0, value_type);
+				_firstN = _newNode(0, 0, value_type());
+				_lastN = _newNode(_firstN, 0, value_type());
 				_firstN->next = _lastN;
 			};
 
@@ -76,19 +77,28 @@ namespace ft
 				_size_value -= 1;
 			};
 			
-			template <typename T>
+			template <typename N>
 			struct _equal
 			{
-				bool operator()(const T &a, const T &b) const
+				bool operator()(const N &a, const N &b) const
 				{
 					return a == b;
 				}
 			};
 
+			template <typename N>
+			struct _superior {
+				bool operator()(const N &a, const N &b)
+				{
+					return a > b;
+				};
+			};
+
 		public:
+
 			// Default constructor
 			explicit list(const allocator_type &alloc=allocator_type())
-				: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+				: _firstN(0), _lastN(0), _size_value(0), _alloc(alloc)
 			{
 				_initialize_list();
 			};
@@ -110,7 +120,7 @@ namespace ft
 				};
 			// copy constructor
 			list(const list &cpy)
-			: _firstN(0), _lastN(0), _alloc(cpy._alloc), _size_value(0)
+			: _firstN(0), _lastN(0), _size_value(0), _alloc(cpy._alloc)
 			{
 				_initialize_list();
 				*this = cpy;
@@ -192,17 +202,41 @@ namespace ft
 				ppbnode->next = _lastN;
 				_size_value--;
 			};
-			//###############################
 			iterator insert(iterator position, const value_type &value)
 			{
+				if (position == begin())
+				{
+					push_front(value);
+					return (begin());
+				}
+				if (position == end())
+				{
+					push_back(value);
+					return (end());
+				}
+				node after = position.getNConstPtr();
+				node before = after->prev;
+				node newNode = _new_node(value, before, after);
+				before->next = newNode;
+				after->prev = newNode;
+				_size_value++;
+				return (iterator(newNode));
 			};
 			void insert(iterator position, size_type n, const value_type &value)
 			{
+				while (n--)
+					position = insert(position, value);
 			};
 			template <class InputIterator>
 			void insert(iterator position, InputIterator first, InputIterator last,
 				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
 			{
+				while (first != last)
+				{
+					position = insert(position, *(first++));
+					if (position != end())
+						position++;
+				}
 			};
 			iterator erase(iterator position)
 			{
@@ -228,9 +262,9 @@ namespace ft
 			};
 			void swap(list &x)
 			{
-				ft::swap(x._size_value, _size_value);
-				ft::swap(x._firstN, _firstN);
-				ft::swap(x._lastN, _lastN);
+				std::swap(x._size_value, _size_value);
+				std::swap(x._firstN, _firstN);
+				std::swap(x._lastN, _lastN);
 			};
 			void resize(size_type n, value_type value = value_type())
 			{
@@ -254,7 +288,7 @@ namespace ft
 			void splice(iterator position, list &x, iterator i)
 			{
 				node i_Node = i.getNConstPtr();
-				node pos_Node = position.getNConstPtr()
+				node pos_Node = position.getNConstPtr();
 
 				i_Node->next->prev = i_Node->prev;
 				i_Node->prev->next = i_Node->next;
@@ -266,11 +300,15 @@ namespace ft
 				x._size_value--;
 				this->_size_value++;
 			};
-			//############################
 			void splice(iterator position, list &x, iterator first, iterator last)
 			{
+				while (first != last)
+				{
+					position = splice(position, x, *(first++));
+					if (position != end())
+						position++;
+				}
 			};
-			//############################
 			void remove(const value_type &value)
 			{
 				iterator rem = begin();
@@ -296,7 +334,6 @@ namespace ft
 				}
 			};
 			
-			//############################
 			void unique()
 			{
 				unique(_equal<value_type>());
@@ -321,20 +358,26 @@ namespace ft
 			};
 			void merge(list &x)
 			{
+				merge(x, _superior<value_type>());
 			};
 			template <class Compare>
 			void merge(list &x, Compare comp)
 			{
+				if (&x == this)
+					return;
+				insert(end(), x.begin(), x.end());
+				x.clear();
+				sort(comp);
 			};
-			void sort(void)
+			void sort()
 			{
+				sort(_superior<value_type>());
 			};
 			template <class Compare>
 			void sort(Compare comp)
 			{
 			};
-			//######################################################
-			void reverse(void)
+			void reverse()
 			{
 				list<value_type> tmp;
 				iterator it = begin();
@@ -343,35 +386,35 @@ namespace ft
 				*this = tmp;
 			};
 	};
-	template <class T>
-	bool operator==(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator==(const list<T>& a, const list<T>& b)
+	// {
+	// }
 
-	template <class T>
-	bool operator!=(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator!=(const list<T>& a, const list<T>& b)
+	// {
+	// }
 
-	template <class T>
-	bool operator<(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator<(const list<T>& a, const list<T>& b)
+	// {
+	// }
 
-	template <class T>
-	bool operator<=(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator<=(const list<T>& a, const list<T>& b)
+	// {
+	// }
 
-	template <class T>
-	bool operator>(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator>(const list<T>& a, const list<T>& b)
+	// {
+	// }
 
-	template <class T>
-	bool operator>=(const list<T>& a, const list<T>& b)
-	{
-	}
+	// template <class T>
+	// bool operator>=(const list<T>& a, const list<T>& b)
+	// {
+	// }
 }
 
 #endif
