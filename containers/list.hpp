@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 04:36:24 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 06:34:51 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include <iostream>
 # include <algorithm>
-# include "../iterators/utils.hpp"
+# include "../iterators/checkers.hpp"
+# include "../iterators/list_iterator.hpp"
 
 namespace ft
 {
@@ -23,19 +24,28 @@ namespace ft
 	template <class T, class Alloc = std::allocator<T> >
 	class list
 	{
+		private:
+		
+			struct Node
+			{
+				T info;
+				Node *prev;
+				Node *next;
+			};
+
 		public:
-			typedef T 										value_type;
-			typedef Alloc 									allocator_type;
-			typedef T& 										reference;
-			typedef const T& 								const_reference;
-			typedef T* 										pointer;
-			typedef const T* 								const_pointer;
-			typedef unsigned long 							size_type;
-			typedef Node<value_type>* 						node;
-			typedef ListIterator<value_type> 				iterator;
-			typedef ConstListIterator<value_type> 			const_iterator;
-			typedef ReverseListIterator<value_type> 		reverse_iterator;
-			typedef ConstReverseListIterator<value_type> 	const_reverse_iterator;
+			typedef T 													value_type;
+			typedef Alloc 												allocator_type;
+			typedef T& 													reference;
+			typedef const T& 											const_reference;
+			typedef T* 													pointer;
+			typedef const T* 											const_pointer;
+			typedef unsigned long 										size_type;
+			typedef Node*			 									node;
+			typedef typename ft::list_iterator<T, Node, false>			iterator;
+			typedef typename ft::list_iterator<T, Node, true>			const_iterator;
+			typedef typename ft::reverse_list_iterator<T, Node, false>	reverse_iterator;
+			typedef typename ft::reverse_list_iterator<T, Node, true> 	const_reverse_iterator;
 		
 		private:
             node			_firstN;
@@ -67,34 +77,41 @@ namespace ft
 			}
 		
 		public:
-		
+			// Default constructor
 			explicit list(const allocator_type &alloc=allocator_type())
 				: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
 			{
 				_initialize_list();
 			};
-
+			// Fill constructor
 			explicit list(size_type n, const value_type &value = value_type(), const allocator_type &alloc=allocator_type())
 			: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
 			{
 				_initialize_list();
 				assign(n, value);
 			};
-
+			// Range constructor
 			template <class InputIterator>
-				list(InputIterator first, InputIterator last, const allocator_type &alloc=allocator_type())
-					: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+				list(InputIterator first, InputIterator last, const allocator_type &alloc=allocator_type(),
+					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
+						: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
 				{
 					_initialize_list();
 					assign(first, last);
-
 				};
-
+			// copy constructor
 			list(const list &cpy)
 			: _firstN(0), _lastN(0), _alloc(cpy._alloc), _size_value(0)
 			{
 				_initialize_list();
 				*this = cpy;
+			};
+			// Destructor
+			~list()
+			{
+				clear();
+				delete _firstN;
+				delete _lastN;
 			};
 
 			list &operator=(const list &affect)
@@ -103,13 +120,6 @@ namespace ft
 				assign(affect.begin(), affect.end());
 				_size_value = affect._size_value;
 				return (*this);
-			};
-
-			~list()
-			{
-				clear();
-				delete _firstN;
-				delete _lastN;
 			};
 
 			iterator begin() 						{ return (iterator(_firstN->next)); };
@@ -130,11 +140,18 @@ namespace ft
 			const_reference back() 			const	{ return (_lastN->prev->info); };
 			
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last)
+			void assign(InputIterator first, InputIterator last,
+				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
 			{
+				clear();
+				while (first != last)
+					push_back(*(first++));
 			};
-			void assign(size_type n, const value_type &value)
+			void assign(size_type n, const value_type &val)
 			{
+				clear();
+				while (n--)
+					push_back(val);
 			};
 			void push_front(const value_type &value)
 			{
@@ -166,6 +183,7 @@ namespace ft
 				ppbnode->next = _lastN;
 				_size_value--;
 			};
+			//###############################
 			iterator insert(iterator position, const value_type &value)
 			{
 			};
@@ -173,20 +191,45 @@ namespace ft
 			{
 			};
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last)
+			void insert(iterator position, InputIterator first, InputIterator last,
+				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
 			{
 			};
+			//##################################
 			iterator erase(iterator position)
 			{
+				if (position == begin())
+				{
+					pop_front();
+					return (begin());
+				}
+				if (position == end())
+				{
+					pop_back();
+					return (end());
+				}
+				node tmp = position.getNonConstPointer()->next;
+				unlinkNode((position);
+				return (iterator(tmp));
 			};
 			iterator erase(iterator first, iterator last)
 			{
+				while (first != last)
+					erase(first++);
+				return (first);
 			};
 			void swap(list &x)
 			{
+				ft::swap(x._size_value, _size_value);
+				ft::swap(x._firstN, _firstN);
+				ft::swap(x._lastN, _lastN);
 			};
 			void resize(size_type n, value_type value = value_type())
 			{
+				while (n < _size_value)
+					pop_back();
+				while (n > _size_value)
+					push_back(value);
 			};
 			void clear()
 			{
@@ -197,15 +240,39 @@ namespace ft
 			};
 			void splice(iterator position, list &x)
 			{
+				while (x.size())
+					splice(position, x, x.begin());
 			};
 			void splice(iterator position, list &x, iterator i)
 			{
+				node i_Node = i.getNonConstPointer();
+				node pos_Node = position.getNonConstPointer()
+
+				i_Node->next->prev = i_Node->prev;
+				i_Node->prev->next = i_Node->next;
+				i_Node->prev = pos_Node->prev;
+				i_Node->next = pos_Node;
+				pos_Node->prev->next = i_Node;
+				pos_Node->prev = i_Node;
+				
+				x._size_value--;
+				this->_size_value++;
 			};
+			//############################
 			void splice(iterator position, list &x, iterator first, iterator last)
 			{
 			};
+			//############################
 			void remove(const value_type &value)
 			{
+				iterator rem = begin();
+				while (rem != end())
+				{
+					if (*rem == value)
+						rem = erase(rem);
+					else
+						rem++;
+				}
 			};
 			template <class Predicate>
 			void remove_if(Predicate pred)
