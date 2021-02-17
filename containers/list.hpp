@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 06:34:51 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 08:14:20 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,23 @@ namespace ft
 				_firstN->next = _lastN;
 			};
 
-			void unlinkNode(Node *delN)
+			void _unlinkNode(Node *delN)
 			{
 				delN->prev->next = delN->next;
 				delN->next->prev = delN->prev;
 				delete delN;
 				_size_value -= 1;
-			}
-		
+			};
+			
+			template <typename T>
+			struct _equal
+			{
+				bool operator()(const T &a, const T &b) const
+				{
+					return a == b;
+				}
+			};
+
 		public:
 			// Default constructor
 			explicit list(const allocator_type &alloc=allocator_type())
@@ -174,7 +183,7 @@ namespace ft
 				_lastN->prev->next = pshbnode;
 				_lastN->prev = pshbnode;
 				_size_value++;
-			}
+			};
 			void pop_back()
 			{
 				node ppbnode = _lastN->prev->prev;
@@ -195,7 +204,6 @@ namespace ft
 				typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
 			{
 			};
-			//##################################
 			iterator erase(iterator position)
 			{
 				if (position == begin())
@@ -208,8 +216,8 @@ namespace ft
 					pop_back();
 					return (end());
 				}
-				node tmp = position.getNonConstPointer()->next;
-				unlinkNode((position);
+				node tmp = position.getNConstPtr()->next;
+				_unlinkNode(position.getNConstPtr());
 				return (iterator(tmp));
 			};
 			iterator erase(iterator first, iterator last)
@@ -235,7 +243,7 @@ namespace ft
 			{
 				node delN = _firstN;
 				while (delN->next != _lastN)
-					unlinkNode(delN->next);
+					_unlinkNode(delN->next);
 				_size_value = 0;
 			};
 			void splice(iterator position, list &x)
@@ -245,8 +253,8 @@ namespace ft
 			};
 			void splice(iterator position, list &x, iterator i)
 			{
-				node i_Node = i.getNonConstPointer();
-				node pos_Node = position.getNonConstPointer()
+				node i_Node = i.getNConstPtr();
+				node pos_Node = position.getNConstPtr()
 
 				i_Node->next->prev = i_Node->prev;
 				i_Node->prev->next = i_Node->next;
@@ -274,16 +282,42 @@ namespace ft
 						rem++;
 				}
 			};
+
 			template <class Predicate>
 			void remove_if(Predicate pred)
 			{
+				iterator rem = begin();
+				while (rem != end())
+				{
+					if (pred(*rem))
+						rem = erase(rem);
+					else
+						rem++;
+				}
 			};
-			void unique(void)
+			
+			//############################
+			void unique()
 			{
+				unique(_equal<value_type>());
+
 			};
 			template <class BinaryPredicate>
 			void unique(BinaryPredicate binary_pred)
 			{
+				iterator it = begin();
+				iterator comp = it;
+				while (comp + 1 != end())
+				{
+					comp++;
+					if (binary_pred(*it, *comp))
+					{
+						erase(comp);
+						comp = it;
+					}
+					else
+						it = comp;
+				}
 			};
 			void merge(list &x)
 			{
@@ -299,8 +333,14 @@ namespace ft
 			void sort(Compare comp)
 			{
 			};
+			//######################################################
 			void reverse(void)
 			{
+				list<value_type> tmp;
+				iterator it = begin();
+				while (it != end())
+					tmp.push_front(*(it++));
+				*this = tmp;
 			};
 	};
 	template <class T>
