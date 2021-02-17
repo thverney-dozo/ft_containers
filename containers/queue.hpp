@@ -6,18 +6,18 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:12 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/15 10:20:50 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 04:07:11 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
-#include <deque>
+#include "vector.hpp"
 
 namespace ft
 {
-    template <class T, class Container = std::deque<T> >
+    template <class T, class Container = ft::vector<T> >
     class queue
 	{
         public:

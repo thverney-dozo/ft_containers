@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 03:55:14 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/17 04:04:27 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,19 +89,19 @@ namespace ft
 				*this = cpy;
 			};
 
-			~list()
-			{
-				clear();
-				delete _firstN;
-				delete _lastN;
-			};
-
 			list &operator=(const list &affect)
 			{
 				clear();
 				assign(affect.begin(), affect.end());
 				_size_value = affect._size_value;
 				return (*this);
+			};
+
+			~list()
+			{
+				clear();
+				delete _firstN;
+				delete _lastN;
 			};
 
 			iterator begin() 						{ return (iterator(_firstN->next)); };
@@ -113,27 +113,14 @@ namespace ft
 			reverse_iterator rend() 				{ return (reverse_iterator(_firstN)); };
 			const_reverse_iterator rend() 	const 	{ return (const_reverse_iterator(_firstN)); };
 
-			bool empty(void) const
-			{
-			};
-			size_type size(void) const
-			{
-			};
-			size_type max_size(void) const
-			{
-			};
-			reference front(void)
-			{
-			};
-			const_reference front(void) const
-			{
-			};
-			reference back(void)
-			{
-			};
-			const_reference back(void) const
-			{
-			};
+			bool empty() 					const 	{ return (_size_value == 0); };
+			size_type size() 				const 	{ return (_size_value); };
+			size_type max_size() 			const 	{ return (allocator_type().max_size()); };
+			reference front()						{ return (_firstN->next->info); };
+			const_reference front() 		const 	{ return (_firstN->next->info); };
+			reference back()						{ return (_lastN->prev->info); };
+			const_reference back() 			const	{ return (_lastN->prev->info); };
+			
 			template <class InputIterator>
 			void assign(InputIterator first, InputIterator last)
 			{
@@ -144,13 +131,13 @@ namespace ft
 			void push_front(const value_type &value)
 			{
 			};
-			void pop_front(void)
+			void pop_front()
 			{
 			};
 			void push_back(const value_type &value)
 			{
 			}
-			void pop_back(void)
+			void pop_back()
 			{
 			};
 			iterator insert(iterator position, const value_type &value)
