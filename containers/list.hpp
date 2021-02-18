@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/18 09:05:25 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/18 11:04:25 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,23 +94,6 @@ namespace ft
 				};
 			};
 
-			void _swap_node(const node a, const node b)
-			{
-				node tmp = a;
-
-				b->info = a->info;
-				b->prev = a->prev;
-				b->next = a->next;
-
-
-
-
-
-				tmp = a
-				a = b;
-				b = tmp;
-			}	
-
 		public:
 
 			// Default constructor
@@ -121,7 +104,7 @@ namespace ft
 			};
 			// Fill constructor
 			explicit list(size_type n, const value_type &value = value_type(), const allocator_type &alloc=allocator_type())
-			: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+			: _firstN(0), _lastN(0), _size_value(0), _alloc(alloc)
 			{
 				_initialize_list();
 				assign(n, value);
@@ -130,7 +113,7 @@ namespace ft
 			template <class InputIterator>
 				list(InputIterator first, InputIterator last, const allocator_type &alloc=allocator_type(),
 					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
-						: _firstN(0), _lastN(0), _alloc(alloc), _size_value(0)
+						: _firstN(0), _lastN(0), _size_value(0), _alloc(alloc)
 				{
 					_initialize_list();
 					assign(first, last);
@@ -169,7 +152,7 @@ namespace ft
 
 			bool empty() 					const 	{ return (_size_value == 0); };
 			size_type size() 				const 	{ return (_size_value); };
-			size_type max_size() 			const 	{ return (allocator_type().max_size()); };
+			size_type max_size() 			const 	{ return (std::numeric_limits<size_type>::max() / (sizeof(Node))); };
 			reference front()						{ return (_firstN->next->info); };
 			const_reference front() 		const 	{ return (_firstN->next->info); };
 			reference back()						{ return (_lastN->prev->info); };
@@ -233,7 +216,7 @@ namespace ft
 				}
 				node after = position.getNConstPtr();
 				node before = after->prev;
-				node newNode = _new_node(value, before, after);
+				node newNode = _newNode(before, after, value);
 				before->next = newNode;
 				after->prev = newNode;
 				_size_value++;
@@ -321,7 +304,7 @@ namespace ft
 			{
 				while (first != last)
 				{
-					position = splice(position, x, *(first++));
+					splice(position, x, first++);
 					if (position != end())
 						position++;
 				}
@@ -359,11 +342,12 @@ namespace ft
 			template <class BinaryPredicate>
 			void unique(BinaryPredicate binary_pred)
 			{
+				if (begin().getNConstPtr()->next == end().getNConstPtr())
+					return;
 				iterator it = begin();
 				iterator comp = it;
-				while (comp + 1 != end())
+				while (++comp != end())
 				{
-					comp++;
 					if (binary_pred(*it, *comp))
 					{
 						erase(comp);
@@ -395,9 +379,11 @@ namespace ft
 			{
 				iterator a = begin();
 				iterator b;
-				while (a + 1 != end())
+				iterator c = a;
+				c++;
+				while (c != end())
 				{
-					b = a + 1;
+					b = c;
 					while (b != end())
 					{
 						if (comp(*a, *b))
@@ -405,6 +391,7 @@ namespace ft
 						b++;
 					}
 					a++;
+					c++;
 				}
 			};
 			void reverse()
@@ -416,41 +403,65 @@ namespace ft
 				*this = tmp;
 			};
 	};
-	template <class T, class Alloc>
-	void swap(List<T, Alloc> &a, List<T, Alloc> &b)
-	{
-		a.swap(b);
-	};
 	template <class T>
 	bool operator==(const list<T>& a, const list<T>& b)
 	{
-		
-	}
+		if (a.size() != b.size())
+			return (false);
+		typename list<T>::const_iterator it1 = a.begin();
+		typename list<T>::const_iterator it2 = b.begin();
+		while (it1 != a.end())
+		{
+			if (*(it1++) != *(it2++))
+				return (false);
+		}
+		return (true);
+	};
+	template <class T>
+	bool operator!=(const list<T>& a, const list<T>& b)
+	{
+		return (!(a == b));
+	};
+	template <class T>
+	bool operator<(const list<T>& a, const list<T>& b)
+	{
+		if (a.size() < b.size())
+			return (true);
+		if (a.size() > b.size())
+			return (false);
+		typename list<T>::const_iterator it1 = a.begin();
+		typename list<T>::const_iterator it2 = b.begin();
+		while (it1 != a.end())
+		{
+			if (*it1 != *it2)
+				return (*it1 < *it2);
+			it1++;
+			it2++;
+		}	
+		return (false);
+	};
+	template <class T>
+	bool operator<=(const list<T>& a, const list<T>& b)
+	{
+		return (!(b < a));
+	};
 
-	// template <class T>
-	// bool operator!=(const list<T>& a, const list<T>& b)
-	// {
-	// }
+	template <class T>
+	bool operator>(const list<T>& a, const list<T>& b)
+	{
+		return (b < a);
+	};
 
-	// template <class T>
-	// bool operator<(const list<T>& a, const list<T>& b)
-	// {
-	// }
-
-	// template <class T>
-	// bool operator<=(const list<T>& a, const list<T>& b)
-	// {
-	// }
-
-	// template <class T>
-	// bool operator>(const list<T>& a, const list<T>& b)
-	// {
-	// }
-
-	// template <class T>
-	// bool operator>=(const list<T>& a, const list<T>& b)
-	// {
-	// }
-}
+	template <class T>
+	bool operator>=(const list<T>& a, const list<T>& b)
+	{
+		return (!(a < b));
+	};
+	template <class T, class Alloc>
+	void swap(list<T, Alloc> &x, list<T, Alloc> &y)
+	{
+		x.swap(y);
+	};
+};
 
 #endif

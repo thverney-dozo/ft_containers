@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 22:37:13 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/13 01:41:17 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/18 10:57:35 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,13 @@ namespace ft
     struct is_input_iterator<T*, true>
     { static const bool value = true; };
 
-
+    template <typename T>
+	void	swap(T &a, T &b)
+	{
+		T tmp = a;
+		a = b;
+		b = tmp;
+	};
 }
 
 #endif

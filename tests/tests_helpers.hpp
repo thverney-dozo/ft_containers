@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 12:43:47 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/18 11:34:02 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ inline void print_header(std::string str)
 	int margin = (40 - str.length()) / 2;
 	int width = (margin * 2 + str.length()) + 2;
 	std::cout << BLUE << std::endl;
-	std::cout << std::string(width, '*') << std::endl;
-	std::cout << "*" << std::string(margin, ' ') << str << std::string(margin, ' ') << "*" << std::endl;
-	std::cout << std::string(width, '*') << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '*') << std::endl;
+	std::cout << "*" << std::string(margin - (str.length() % 2 == 0 ? 1 : 0), ' ')\
+				<< str << std::string(margin, ' ') << "*" << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '*') << std::endl;
 	std::cout << RESET;
 };
 
@@ -61,9 +62,10 @@ inline void print_header_container(std::string str)
 	int margin = (40 - str.length()) / 2;
 	int width = (margin * 2 + str.length()) + 2;
 	std::cout << GREEN << std::endl;
-	std::cout << std::string(width, '*') << std::endl;
-	std::cout << "*" << std::string(margin, ' ') << str << std::string(margin, ' ') << "*" << std::endl;
-	std::cout << std::string(width, '*') << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '@') << std::endl;
+	std::cout << "@" << std::string(margin - (str.length() % 2 == 0 ? 1 : 0), ' ') << str \
+		<< std::string(margin, ' ') << "@" << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '@') << std::endl;
 	std::cout << RESET;
 };
 
@@ -97,6 +99,25 @@ bool operator==(ft::vector<T> &a, std::vector<T> &b)
 	{
 		if (a[i] != b[i])
 			return (false);
+	}
+	return (true);
+};
+
+template <typename T>
+bool operator==(ft::list<T> &a, std::list<T> &b)
+{
+	if (a.size() != b.size())
+		return (false);
+	if (a.empty() != b.empty())
+		return (false);
+	typename ft::list<T>::iterator it = a.begin();
+	typename std::list<T>::iterator it2 = b.begin();
+	while (it != a.end())
+	{
+		if (*it != *it2)
+			return (false);
+		++it;
+		++it2;
 	}
 	return (true);
 };
