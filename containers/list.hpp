@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/17 14:20:33 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/18 09:05:25 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,23 @@ namespace ft
 					return a > b;
 				};
 			};
+
+			void _swap_node(const node a, const node b)
+			{
+				node tmp = a;
+
+				b->info = a->info;
+				b->prev = a->prev;
+				b->next = a->next;
+
+
+
+
+
+				tmp = a
+				a = b;
+				b = tmp;
+			}	
 
 		public:
 
@@ -376,6 +393,19 @@ namespace ft
 			template <class Compare>
 			void sort(Compare comp)
 			{
+				iterator a = begin();
+				iterator b;
+				while (a + 1 != end())
+				{
+					b = a + 1;
+					while (b != end())
+					{
+						if (comp(*a, *b))
+							ft::swap(*a, *b);
+						b++;
+					}
+					a++;
+				}
 			};
 			void reverse()
 			{
@@ -386,10 +416,16 @@ namespace ft
 				*this = tmp;
 			};
 	};
-	// template <class T>
-	// bool operator==(const list<T>& a, const list<T>& b)
-	// {
-	// }
+	template <class T, class Alloc>
+	void swap(List<T, Alloc> &a, List<T, Alloc> &b)
+	{
+		a.swap(b);
+	};
+	template <class T>
+	bool operator==(const list<T>& a, const list<T>& b)
+	{
+		
+	}
 
 	// template <class T>
 	// bool operator!=(const list<T>& a, const list<T>& b)
