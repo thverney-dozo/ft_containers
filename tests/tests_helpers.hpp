@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/19 11:12:08 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/19 15:24:45 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@
 
 # define GOOD "✓"
 # define FAIL "❌"
-
-// template<typename V>
-//     void    print_tree(B_S_T<V> *first)
-// 	{
-
-// 	};
 
 void	test_vector(void);
 

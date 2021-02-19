@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 06:26:24 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/19 15:18:17 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/19 15:47:38 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define AVL_TREE_HPP 
 
 # include <cstdlib>
+# include <iostream>
 
 namespace ft
 {
@@ -313,7 +314,21 @@ template<typename V>
             delete max_node;
             return (balance_tree(tmp));
         }
-    }
+    };
+
+template<typename V>
+    void print_tree(B_S_T<V> *root, int space)// root, space == 0
+    {
+        if (root == NULL)
+            return;
+        space += 10;
+        print_tree(root->right, space);
+        std::cout << std::endl;
+        for (int i = 10; i < space; i++)
+            std::cout << " ";
+        std::cout << root->data << std::endl;
+        print_tree(root->left, space);
+    };
 
 };
 
