@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 18:34:23 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/18 11:04:25 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/18 11:40:05 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 namespace ft
 {
-
 	template <class T, class Alloc = std::allocator<T> >
 	class list
 	{

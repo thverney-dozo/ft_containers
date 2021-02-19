@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/18 11:34:02 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/19 11:12:08 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../containers/stack.hpp"
 # include "../containers/queue.hpp"
 # include "../containers/list.hpp"
+# include "../iterators/avl_tree.hpp"
 
 # ifdef __linux__
 #  define RESET "\e[0m"
@@ -42,6 +43,12 @@
 
 # define GOOD "✓"
 # define FAIL "❌"
+
+// template<typename V>
+//     void    print_tree(B_S_T<V> *first)
+// 	{
+
+// 	};
 
 void	test_vector(void);
 
