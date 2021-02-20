@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 06:26:24 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/20 18:24:41 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/20 18:27:36 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ template<typename V>
                 A->left = B->right;
                 B->right = A;
                 // ft::print_tree(B, 0);
-                return (balance_tree(B));
+                return (balance_tree(A));
             }
             else                            //LR
             {
