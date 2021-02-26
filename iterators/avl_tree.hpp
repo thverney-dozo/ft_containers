@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 06:26:24 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/20 18:27:36 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/26 17:27:10 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,34 @@
 namespace ft
 {
 
+template <typename V1, typename V2>
+    class pair
+    {
+        public:
+            pair() : key(), mapped() {};
+            pair(const V1& a, const V2& b) : key(a), mapped(b) {};
+            pair(const pair<V1, V2>& copy) : key(copy.key), mapped(copy.mapped) {};
+            template <typename U, typename V>
+                pair(const pair<U, V>& copy) : key(copy.key), mapped(copy.mapped) {};
+            ~pair() {};
+            pair& operator=(const pair& assign)
+            {
+                if (this != &assign)
+                {
+                    key = assign.key;
+                    mapped = assign.mapped;
+                }
+                return (*this);
+            }
+            V1 key;
+            V2 mapped;
+    };
+
 template<typename V>
     struct B_S_T
     {
         V       value;
+        ft::pair<const V, T>  set;
         B_S_T*  parent;
         B_S_T*  left;
         B_S_T*  right;
@@ -129,43 +153,38 @@ template<typename V>
 template<typename V>
     B_S_T<V>    *balance_tree(B_S_T<V> *last) // stops at highest node
     {
-        std::cout << "enter in balance_tree())";
         if (!last)
             return (0);
         if (!last->parent)
-        {
-            ft::print_tree(last, 0);
             return (last);
-        }
-        std::cout << " and continue in balance_tree() with : " << last->value << std::endl;
         B_S_T<V> *old;
         old = last->parent;
         B_S_T<V> *A = old;
-        printf("total_factor = %d \n", total_factor(old));
         if (total_factor(old) > 1)
         {
-            std::cout << "je passe la {1} [value:" << last->value << "] [parent:" << last->parent->value << "]"<<std::endl;
             B_S_T<V> *B = old->left;
-            if (total_factor(old->left) >= 0) // LL
+            if (total_factor(B) >= 0) // LL
             {
-                std::cout << "je passe la {1.1.0}[value:" << last->value<< "]"<<std::endl;
-                // std::cout << "je passe la {1.1.1}[value:" << last->value<< "]"<<std::endl;
-                // std::cout << "je passe la {1.1.2}[value:" << last->value<< "]"<<std::endl;
-                // std::cout << "je passe la {1.1.3}[value:" << last->value<< "]"<<std::endl;
-                // std::cout << "je passe la {1.1.4}[value:" << last->value<< "]"<<std::endl;
-                
-                // ft::print_tree(A, 0);
                 B->parent = A->parent;
+                if (B->parent)
+                {
+                    if (B->parent->right == A)
+                        B->parent->right = B;
+                    else
+                        B->parent->left = B;
+                }
                 A->parent = B;
                 A->left = B->right;
                 B->right = A;
-                // ft::print_tree(B, 0);
-                return (balance_tree(A));
+                if (A->left)
+                    A->left->parent = A;
+                return (balance_tree(B));
             }
             else                            //LR
             {
-                std::cout << "je passe la {1.2}[value:" << last->value<< "]"<<std::endl;
                 B_S_T<V> *C = old->left->right;
+                if (A->parent->left)
+                    A->parent->left = C;
                 B->parent = C;
                 C->parent = A->parent;
                 A->parent = C;
@@ -178,21 +197,30 @@ template<typename V>
         }
         else if (total_factor(old) < -1)
         {
-            std::cout << "je passe la {2}" << std::endl;
             B_S_T<V> *B = old->right;
-            if (total_factor(old->right) >= 0) // RR
+            if (total_factor(old->right) <= 0) // RR
             {
-                std::cout << "je passe la {2.1}" << std::endl;
                 B->parent = A->parent;
+                if (B->parent)
+                {
+                    if (B->parent->right == A)
+                        B->parent->right = B;
+                    else
+                        B->parent->left = B;
+
+                }   
                 A->parent = B;
                 A->right = B->left;
                 B->left = A;
+                if (A->right)
+                    A->right->parent = A;
                 return (balance_tree(B));
             }
             else                                //RL
             {
-                std::cout << "je passe la {2.2}" << std::endl;
                 B_S_T<V> *C = old->right->left;
+                if (A->parent->right)
+                    A->parent->right = C;
                 C->parent = A->parent;
                 A->parent = C;
                 B->parent = C;
@@ -219,10 +247,22 @@ template<typename V>
     };
 
 template<typename V>
+    void    null_and_del_bst(B_S_T<V>* node)
+    {
+        if (node->parent)
+            node->parent = 0;
+        if (node->left)
+            node->left = 0;
+        if (node->right)
+            node->right = 0;
+        delete node;
+    };
+
+template<typename V>
     B_S_T<V>    *max_val_node(B_S_T<V> *first)
     {
         if (first->right)
-            max_val_node(first->right);
+            return (max_val_node(first->right));
         return (first);
     };
 
@@ -230,7 +270,7 @@ template<typename V>
     B_S_T<V>    *min_val_node(B_S_T<V> *first)
     {
         if (first->left)
-            min_val_node(first->left);
+            return (min_val_node(first->left));
         return (first);
     };
 
@@ -266,16 +306,12 @@ template<typename V>
             else
                 first = first->left;
         }
+        B_S_T<V> *newNode = create_new_bst(ins);
         if (ins > tmp->value)
-        {
-            tmp->right = create_new_bst(ins);
-            tmp->right->parent = tmp;
-        }
+            tmp->right = newNode;
         else
-        {
-            tmp->left = create_new_bst(ins);
-            tmp->left->parent = tmp;
-        }
+            tmp->left = newNode;
+        newNode->parent = tmp;
         return (balance_tree(ins > tmp->value ? tmp->right : tmp->left));
     };
 
@@ -292,35 +328,56 @@ template<typename V>
         {
             if (!tmp_left && !tmp_right)
             {
-                delete tmp;
+                null_and_del_bst(tmp);
                 return (0);
             }
             else if (tmp_left && !tmp_right)
             {
-                delete tmp;
-                tmp_left->parent = NULL;
+                tmp_left->parent = 0;
+                null_and_del_bst(tmp);
                 return (balance_tree_root(tmp_left));
             }
             else if (!tmp_left && tmp_right)
             {
-                delete tmp;
-                tmp_right->parent = NULL;
+                tmp_right->parent = 0;
+                null_and_del_bst(tmp);
                 return (balance_tree_root(tmp_right));
             }
             else
             {
                 B_S_T<V> *max_node = max_val_node(tmp->left);
                 tmp->value = max_node->value;
-                delete max_node;
+                if (max_node->parent && max_node->parent->right == max_node)
+                {
+                    if (max_node->left)
+                    {
+                        max_node->left->parent = max_node->parent->right;
+                        max_node->parent->right = max_node->left;
+                    }
+                    else
+                        max_node->parent->right = 0;
+                }    
+                null_and_del_bst(max_node);
                 return (balance_tree_root(tmp));
             }
         }
         else if (!tmp_left && !tmp_right)
         {
             B_S_T<V> *tmp_parent = tmp->parent;
-            delete tmp;
+            if (tmp_parent->left == tmp)
+                tmp_parent->left = 0;
+            else if (tmp_parent->right == tmp)
+                tmp_parent->right = 0;
+            null_and_del_bst(tmp);
             if (tmp_parent->parent)
-                return (balance_tree(tmp_parent));
+            {
+                if (tmp_parent->right)
+                    return (balance_tree(tmp_parent->right));
+                else if (tmp_parent->left)
+                    return (balance_tree(tmp_parent->left));
+                else
+                    return (balance_tree(tmp_parent));
+            }
             else
                 return (balance_tree_root(tmp_parent));
         }
@@ -331,7 +388,7 @@ template<typename V>
                 tmp->parent->left = tmp->left;
             else
                 tmp->parent->right = tmp->left;
-            delete tmp;
+            null_and_del_bst(tmp);
             if (tmp_parent->parent)
                 return (balance_tree(tmp_parent));
             else
@@ -344,7 +401,7 @@ template<typename V>
                 tmp->parent->left = tmp->right;
             else
                 tmp->parent->right = tmp->right;
-            delete tmp;
+            null_and_del_bst(tmp);
             if (tmp_parent->parent)
                 return (balance_tree(tmp_parent));
             else
@@ -353,8 +410,16 @@ template<typename V>
         else
         {
             B_S_T<V> *max_node = max_val_node(tmp->left);
+            if (max_node->parent)
+            {
+                if (max_node->parent->left == max_node)
+                        max_node->parent->left = 0;
+                else if (max_node->parent->right == max_node)
+                    max_node->parent->right = 0;
+                max_node->parent = 0;
+            }   
             tmp->value = max_node->value;
-            delete max_node;
+            null_and_del_bst(max_node);
             return (balance_tree(tmp));
         }
     };
