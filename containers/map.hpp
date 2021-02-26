@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/26 19:12:46 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/26 20:59:56 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,75 @@ namespace ft
         
         private:
 
-            B_S_T*                   _firstNd;          // Pointer to the first element of the tree (root)
-            B_S_T*                   _lastNd;      // Pointer to the last elem of the tree
+            B_S_T*                  _firstNd;          // Pointer to the first element of the tree (root)
+            B_S_T*                  _lastNd;      // Pointer to the last elem of the tree
             size_type               _size_value;          // Number of T values inside the map
             allocator_type          _alloc_pair;     // Copy of allocator_type object
             key_compare             _compare;          // Copy of comp key_compare predicate
-            std::allocator<B_S_T>   _alloc_node;     
+            std::allocator<B_S_T>   _alloc_node; 
+            B_S_T*		            _after_last;
+    
         
         public:
             explicit map (const key_compare& comp = key_compare(),
-                    const allocator_type& alloc = allocator_type()){};
-                    
+                    const allocator_type& alloc = allocator_type()) :
+                _size_value(0), _alloc_pair(alloc), _compare(comp)
+            {
+                _lastNd = create_new_bst(ft::pair<const key_type, mapped_type>());
+                _firstNd = _lastNd;
+                _lastNd->left = _lastNd;
+                _lastNd->right = _lastNd;
+            }
+
             template <class InputIterator>
-            map (InputIterator first, InputIterator last,
-                const key_compare& comp = key_compare(),
-                const allocator_type& alloc = allocator_type()){};
+            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
+                    const allocator_type& alloc = allocator_type(),
+					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0) :
+                    _size_value(0), _alloc_pair(alloc), _compare(comp)
+            {
+                _lastNd = createNode(ft::pair<const key_type, mapped_type>());
+                _firstNd = _lastNd;
+                _lastNd->left = _lastNd;
+                _lastNd->right = _lastNd;
+                while (first != last)
+                {
+                    first++;
+                    insert(*first);
+                }
+            };
             
-            map (const map& x){};
-            map& operator= (const map& x){};
-            ~map(){};
-            iterator begin(void) {};
-			const_iterator begin(void) const {};
-			iterator end(void) {};
+            map (const map& x) :
+                _size_value(0), _alloc_pair(x._alloc_pair), _compare(x._compare), _alloc_node(x._alloc_node)
+            {
+                _lastNd = createNode(ft::pair<const key_type, mapped_type>());
+                _firstNd = _lastNd;
+                _lastNd->left = _lastNd;
+                _lastNd->right = _lastNd;
+                for (iterator it = x.begin(); it != x.end(); ++it)
+                    insert(*it);
+            }
+            map& operator=(const map& x)
+            {
+                map tmp(x);
+                this->swap(tmp);
+                return *this;
+            };
+            ~map()
+            {
+                clear();
+                null_and_del_bst(_lastNd);
+            };
+            iterator begin(void)
+            {
+                return (iterator(min_val_node(_firstNd), max_val_node(_firstNd), _compare));
+            };
+			const_iterator begin(void) const
+            {
+                return (const_iterator(min_val_node(_firstNd), max_val_node(_firstNd), _compare));
+            };
+			iterator end(void)
+            {
+            };
 			const_iterator end(void) const {};
 			reverse_iterator rbegin(void) {};
 			const_reverse_iterator rbegin(void) const {};
@@ -84,8 +131,41 @@ namespace ft
             size_type size() const {};
             size_type max_size() const {};
             mapped_type& operator[] (const key_type& k) {};
-            pair<iterator,bool> insert (const value_type& val) {};
-            iterator insert (iterator position, const value_type& val) {};
+            pair<iterator,bool> insert (const value_type& val)
+            {
+                B_S_T* ins = search(_firstNd, val.first);
+                if (ins)
+                    return ft::pair<iterator, bool>(iterator(ins, _lastNd, _compare), false);
+                _size_value++;
+                return ft::pair<iterator, bool>(iterator(insert_in_tree(_firstNd, val), _lastNd, _compare), true);
+            };
+            iterator insert (iterator position, const value_type& val)
+            {
+                if (position->_ptr > val.key)
+                {
+                    iterator prev(position);
+                    prev--;
+                    while (prev != end() && prev->_ptr >= val.key)
+                    {
+                        position--;
+                        prev--;
+                    }
+                }
+                else if (position->_ptr < val.key)
+                {
+                    iterator next(position);
+                    next++;
+                    while (next != end() && next->_ptr <= val.key)
+                    {
+                        position++;
+                        next++;
+                    }
+                }
+                if (position != end() && val.key == position->_ptr)
+                    return position;
+                _size_value++;
+                return iterator(insertNode(position.getNode(), val), _lastNd, _compare);
+            };
             template <class InputIterator>
                 void insert (InputIterator first, InputIterator last) {};
             void erase (iterator position) {};
@@ -109,7 +189,7 @@ namespace ft
             
             int   balance_factor(B_S_T *first)
             {
-                if (first == NULL)
+                if (first == NULL || first == _lastNd)
                     return -1;
                 else 
                 {
@@ -331,14 +411,14 @@ namespace ft
             {
                 if (!first || first == _lastNd)
                     return (0);
-                while (first && first->set.key != search)
+                while (first && first->set.key != search && first != _lastNd)
                 {
                     if (first->set.key < search)
                         first = first->right;
                     else
                         first = first->left;
                 }
-                if (first)
+                if (first && first != _lastNd)
                     return (first);
                 else
                     return (0);
