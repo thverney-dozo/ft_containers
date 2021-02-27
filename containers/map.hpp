@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/26 20:59:56 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 15:13:32 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ namespace ft
         
         private:
 
-            B_S_T*                  _firstNd;          // Pointer to the first element of the tree (root)
-            B_S_T*                  _lastNd;      // Pointer to the last elem of the tree
-            size_type               _size_value;          // Number of T values inside the map
-            allocator_type          _alloc_pair;     // Copy of allocator_type object
-            key_compare             _compare;          // Copy of comp key_compare predicate
+            B_S_T*                  _firstNd;
+            B_S_T*                  _afterLast;
+            size_type               _size_value;
+            allocator_type          _alloc_pair;
+            key_compare             _compare;
             std::allocator<B_S_T>   _alloc_node; 
-            B_S_T*		            _after_last;
     
         
         public:
@@ -67,10 +66,10 @@ namespace ft
                     const allocator_type& alloc = allocator_type()) :
                 _size_value(0), _alloc_pair(alloc), _compare(comp)
             {
-                _lastNd = create_new_bst(ft::pair<const key_type, mapped_type>());
-                _firstNd = _lastNd;
-                _lastNd->left = _lastNd;
-                _lastNd->right = _lastNd;
+                _afterLast = create_new_bst(ft::pair<const key_type, mapped_type>());
+                _firstNd = _afterLast;
+                _afterLast->left = _afterLast;
+                _afterLast->right = _afterLast;
             }
 
             template <class InputIterator>
@@ -79,10 +78,10 @@ namespace ft
 					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0) :
                     _size_value(0), _alloc_pair(alloc), _compare(comp)
             {
-                _lastNd = createNode(ft::pair<const key_type, mapped_type>());
-                _firstNd = _lastNd;
-                _lastNd->left = _lastNd;
-                _lastNd->right = _lastNd;
+                _afterLast = createNode(ft::pair<const key_type, mapped_type>());
+                _firstNd = _afterLast;
+                _afterLast->left = _afterLast;
+                _afterLast->right = _afterLast;
                 while (first != last)
                 {
                     first++;
@@ -93,10 +92,10 @@ namespace ft
             map (const map& x) :
                 _size_value(0), _alloc_pair(x._alloc_pair), _compare(x._compare), _alloc_node(x._alloc_node)
             {
-                _lastNd = createNode(ft::pair<const key_type, mapped_type>());
-                _firstNd = _lastNd;
-                _lastNd->left = _lastNd;
-                _lastNd->right = _lastNd;
+                _afterLast = createNode(ft::pair<const key_type, mapped_type>());
+                _firstNd = _afterLast;
+                _afterLast->left = _afterLast;
+                _afterLast->right = _afterLast;
                 for (iterator it = x.begin(); it != x.end(); ++it)
                     insert(*it);
             }
@@ -109,24 +108,17 @@ namespace ft
             ~map()
             {
                 clear();
-                null_and_del_bst(_lastNd);
+                null_and_del_bst(_afterLast);
             };
-            iterator begin(void)
-            {
-                return (iterator(min_val_node(_firstNd), max_val_node(_firstNd), _compare));
-            };
-			const_iterator begin(void) const
-            {
-                return (const_iterator(min_val_node(_firstNd), max_val_node(_firstNd), _compare));
-            };
-			iterator end(void)
-            {
-            };
-			const_iterator end(void) const {};
-			reverse_iterator rbegin(void) {};
-			const_reverse_iterator rbegin(void) const {};
-			reverse_iterator rend(void) {};
-			const_reverse_iterator rend(void) const {};
+            iterator begin()                        { return iterator(_afterLast->right, _afterLast, _compare); }
+            const_iterator begin() const            { return const_iterator(_afterLast->right, _afterLast, _compare); }
+            iterator end()                          { return iterator(_afterLast, _afterLast, _compare); }
+            const_iterator end() const              { return const_iterator(_afterLast, _afterLast, _compare); }
+            reverse_iterator rbegin()               { return reverse_iterator(_afterLast->left, _afterLast, _compare); }
+            const_reverse_iterator rbegin() const   { return const_reverse_iterator(_afterLast->left, _afterLast, _compare); }
+            reverse_iterator rend()                 { return reverse_iterator(_afterLast, _afterLast, _compare); }
+            const_reverse_iterator rend() const     { return const_reverse_iterator(_afterLast, _afterLast, _compare); }
+            
             bool empty() const {};
             size_type size() const {};
             size_type max_size() const {};
@@ -135,9 +127,9 @@ namespace ft
             {
                 B_S_T* ins = search(_firstNd, val.first);
                 if (ins)
-                    return ft::pair<iterator, bool>(iterator(ins, _lastNd, _compare), false);
+                    return ft::pair<iterator, bool>(iterator(ins, _afterLast, _compare), false);
                 _size_value++;
-                return ft::pair<iterator, bool>(iterator(insert_in_tree(_firstNd, val), _lastNd, _compare), true);
+                return ft::pair<iterator, bool>(iterator(insert_in_tree(_firstNd, val), _afterLast, _compare), true);
             };
             iterator insert (iterator position, const value_type& val)
             {
@@ -164,7 +156,7 @@ namespace ft
                 if (position != end() && val.key == position->_ptr)
                     return position;
                 _size_value++;
-                return iterator(insertNode(position.getNode(), val), _lastNd, _compare);
+                return iterator(insertNode(position.getNode(), val), _afterLast, _compare);
             };
             template <class InputIterator>
                 void insert (InputIterator first, InputIterator last) {};
@@ -189,7 +181,7 @@ namespace ft
             
             int   balance_factor(B_S_T *first)
             {
-                if (first == NULL || first == _lastNd)
+                if (first == NULL || first == _afterLast)
                     return -1;
                 else 
                 {
@@ -371,10 +363,10 @@ namespace ft
                 return (balance_tree(old));
             };
 
-            B_S_T    *create_new_bst(const value_type& pair)
+            B_S_T    *create_new_bst(const value_type& new_bst)
             {
                 B_S_T* newNode = _allocNode.allocate(1);
-                _allocPair.construct(&newNode->set, pair);
+                _alloc_pair.construct(&newNode->set, new_bst);
                 newNode->parent = 0;
                 newNode->left = 0;
                 newNode->right = 0;
@@ -395,30 +387,30 @@ namespace ft
 
             B_S_T    *max_val_node(B_S_T *first)
             {
-                if (first->right)
+                if (first->right && first->right != _afterLast)
                     return (max_val_node(first->right));
                 return (first);
             };
 
             B_S_T    *min_val_node(B_S_T *first)
             {
-                if (first->left)
+                if (first->left && first->left != _afterLast)
                     return (min_val_node(first->left));
                 return (first);
             };
 
             B_S_T    *search(B_S_T *first, key_type key)
             {
-                if (!first || first == _lastNd)
+                if (!first || first == _afterLast)
                     return (0);
-                while (first && first->set.key != search && first != _lastNd)
+                while (first && first->set.key != search && first != _afterLast)
                 {
                     if (first->set.key < search)
                         first = first->right;
                     else
                         first = first->left;
                 }
-                if (first && first != _lastNd)
+                if (first && first != _afterLast)
                     return (first);
                 else
                     return (0);
@@ -426,135 +418,111 @@ namespace ft
 
             B_S_T    *insert_in_tree(B_S_T *first, const value_type& ins)
             {
-                if (!first)
-                    return (create_new_bst(ins));
+                if (_firstNd == _afterLast)
+                {
+                    _firstNd = createNode(ins);
+                    _firstNd->left = _afterLast;
+                    _firstNd->right = _afterLast;
+                    _afterLast->left = _firstNd;
+                    _afterLast->right = _firstNd;
+                    return (_firstNd);
+                }
                 if (search(first, ins))
                     return (first);
-                B_S_T *tmp;
-                while (first)
-                {
-                    tmp = first;
-                    if (ins.key > first->set.key)
-                        first = first->right;
-                    else
-                        first = first->left;
-                }
+                if (first->set.key > ins.key && first->left && first->left != _afterLast)
+                    return (insertNode(first->left, ins));
+                else if (first->set.key < ins.key && first->right && first->right != _afterLast)
+                    return (insertNode(first->right, ins));
                 B_S_T *newNode = create_new_bst(ins);
-                if (ins.key > tmp->set.key)
-                    tmp->right = newNode;
-                else
-                    tmp->left = newNode;
-                newNode->parent = tmp;
-                return (balance_tree(ins.key > tmp->set.key ? tmp->right : tmp->left));
+                if (first->set.key > newNode->set.key && !first->left)
+                    first->left = newNode;
+                else if (first->set.key < newNode->set.key && !first->right)
+                    first->right = newNode;
+                else if (first->left && first->set.key > newNode->set.key)
+                {
+                    newNode->left = _afterLast;
+                    _afterLast->right = newNode;
+                    first->left = newNode;
+                }
+                else if (first->right && first->set.key < newNode->set.key)
+                {
+                    newNode->right = _afterLast;
+                    _afterLast->left = newNode;
+                    first->right = newNode;
+                }
+                newNode->parent = first;
+                return (balance_tree(newNode));
             };
 
-            B_S_T    *delete_in_tree(B_S_T *first, key_type key)
+            bool    delete_in_tree(B_S_T *first, key_type key)
             {
                 B_S_T *tmp = search(first, key);
                 if (!tmp)
-                    return (first);
-                B_S_T *tmp_left = tmp->left;
-                    B_S_T *tmp_right = tmp->right;
-                    if (!tmp->parent)
+                    return (false);
+                B_S_T *tmp_parent = tmp->parent;
+                if (!tmp->parent)
+                {
+                    if (tmp->left == _afterLast && tmp->right == _afterLast)
                     {
-                        if (!tmp_left && !tmp_right)
-                        {
-                            null_and_del_bst(tmp);
-                            return (0);
-                        }
-                        else if (tmp_left && !tmp_right)
-                        {
-                            tmp_left->parent = 0;
-                            null_and_del_bst(tmp);
-                            return (balance_tree_root(tmp_left));
-                        }
-                        else if (!tmp_left && tmp_right)
-                        {
-                            tmp_right->parent = 0;
-                            null_and_del_bst(tmp);
-                            return (balance_tree_root(tmp_right));
-                        }
-                        else
-                        {
-                            B_S_T *max_node = max_val_node(tmp->left);
-                            tmp->set.key = max_node->set.key;
-                            if (max_node->parent && max_node->parent->right == max_node)
-                            {
-                                if (max_node->left)
-                                {
-                                    max_node->left->parent = max_node->parent->right;
-                                    max_node->parent->right = max_node->left;
-                                }
-                                else
-                                    max_node->parent->right = 0;
-                            }    
-                            null_and_del_bst(max_node);
-                            return (balance_tree_root(tmp));
-                        }
+                        _firstNd = _afterLast;
+                        _afterLast->left = _afterLast;
+                        _afterLast->right = _afterLast;
                     }
-                    else if (!tmp_left && !tmp_right)
+                    else if (tmp->left && tmp->right == _afterLast)
                     {
-                        B_S_T *tmp_parent = tmp->parent;
-                        if (tmp_parent->left == tmp)
-                            tmp_parent->left = 0;
-                        else if (tmp_parent->right == tmp)
-                            tmp_parent->right = 0;
-                        null_and_del_bst(tmp);
-                        if (tmp_parent->parent)
-                        {
-                            if (tmp_parent->right)
-                                return (balance_tree(tmp_parent->right));
-                            else if (tmp_parent->left)
-                                return (balance_tree(tmp_parent->left));
-                            else
-                                return (balance_tree(tmp_parent));
-                        }
-                        else
-                            return (balance_tree_root(tmp_parent));
+                        _firstNd = tmp->left;
+                        tmp->left->parent = 0;
+                        _afterLast->left = tmp->left;
+                        tmp->left->right = _afterLast;
                     }
-                    else if (tmp_left && !tmp_right)
+                    else if (tmp->left == _afterLast && tmp->right)
                     {
-                        B_S_T *tmp_parent = tmp->parent;
-                        if (tmp->set.key < tmp->parent->set.key)
-                            tmp->parent->left = tmp->left;
-                        else
-                            tmp->parent->right = tmp->left;
-                        null_and_del_bst(tmp);
-                        if (tmp_parent->parent)
-                            return (balance_tree(tmp_parent));
-                        else
-                            return (balance_tree_root(tmp_parent));
-                    }
-                    else if (!tmp_left && tmp_right)
-                    {
-                        B_S_T *tmp_parent = tmp->parent;
-                        if (tmp->set.key < tmp->parent->set.key)
-                            tmp->parent->left = tmp->right;
-                        else
-                            tmp->parent->right = tmp->right;
-                        null_and_del_bst(tmp);
-                        if (tmp_parent->parent)
-                            return (balance_tree(tmp_parent));
-                        else
-                            return (balance_tree_root(tmp_parent));
+                        _firstNd = tmp->right;
+                        tmp->right->parent = 0;
+                        _afterLast->right = tmp->right;
+                        tmp->right->left = _afterLast;
                     }
                     else
                     {
-                        B_S_T *max_node = max_val_node(tmp->left);
-                        if (max_node->parent)
-                        {
-                            if (max_node->parent->left == max_node)
-                                    max_node->parent->left = 0;
-                            else if (max_node->parent->right == max_node)
-                                max_node->parent->right = 0;
-                            max_node->parent = 0;
-                        }   
-                        tmp->set.key = max_node->set.key;
-                        null_and_del_bst(max_node);
-                        return (balance_tree(tmp));
+                        B_S_T* maxNode = searchMaxNode(tmp->left);
+                        _alloc_pair.destroy(&tmp->set);
+                        _alloc_pair.construct(&tmp->set, maxNode->set);
+                        return (delete_in_tree(tmp->left, maxNode->set.key));
                     }
-                };
-
+                }
+                else if ((!tmp->left || tmp->left == _afterLast) && (!tmp->right || tmp->right == _afterLast))
+                {
+                    B_S_T* toparent = 0;
+                    if (tmp->left == _afterLast || tmp->right == _afterLast)
+                    {
+                        toparent = _afterLast;
+                        tmp->set.key <= tmp->parent->set.key ? _afterLast->right = tmp->parent : _afterLast->left = tmp->parent;
+                    }
+                    tmp->set.key <= tmp->parent->set.key ? tmp->parent->left = toparent : tmp->parent->right = toparent;
+                }
+                else if ((tmp->left && tmp->left != _afterLast) && (!tmp->right || tmp->right == _afterLast))
+                {
+                    tmp->set.key <= tmp->parent->set.key ? tmp->parent->left = tmp->left : tmp->parent->right = tmp->left;
+                    tmp->left->parent = tmp->parent;
+                    if (tmp->right == _afterLast) { _afterLast->left = tmp->left; tmp->left->right = _afterLast; }
+                }
+                else if ((!tmp->left || tmp->left == _afterLast) && tmp->right && tmp->right != _afterLast)
+                {
+                    tmp->set.key <= tmp->parent->set.key ? tmp->parent->left = tmp->right : tmp->parent->right = tmp->right;
+                    tmp->right->parent = tmp->parent;
+                    if (tmp->left == _afterLast) { _afterLast->right = tmp->right; tmp->right->left = _afterLast; }
+                }
+                else
+                {
+                    B_S_T* maxNode = searchMaxNode(tmp->left);
+                    _alloc_pair.destroy(&tmp->set);
+                    _alloc_pair.construct(&tmp->set, maxNode->set);
+                    return delete_in_tree(tmp->left, maxNode->set.key);
+                }
+                balance_tree(tmp_parent);
+                null_and_del_bst(tmp);
+                return true;
+            };
     };
     template <class Key, class T, class Compare, class Alloc>
 	void swap(ft::Map<Key, T, Compare, Alloc> &x, ft::Map<Key, T, Compare, Alloc> &y) {};
