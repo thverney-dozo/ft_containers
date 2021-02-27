@@ -6,14 +6,16 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 12:31:53 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 18:21:44 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 19:27:36 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_ITERATOR
 #define MAP_ITERATOR
 
+# include <utility>
 #include "../iterators/is_const_it.hpp"
+
 
 namespace ft
 {
@@ -22,18 +24,17 @@ namespace ft
     {
         public:
         
-            typedef Key                                                     key_type;
-            typedef Compare                                                 key_compare;
-            typedef T                                                       mapped_type;
-            typedef std::pair<const key_type, mapped_type>                  value_type;
-            typedef long int                                                difference_type;
-            typedef size_t                                                  size_type;
-            typedef typename choose_if_const<B, T&, const T&>::_type		reference;
-			typedef typename choose_if_const<B, T*, const T*>::_type		pointer;
-            typedef B_S_T*                                                  nodeptr;
+            typedef Key                                                                     key_type;
+            typedef Compare                                                                 key_compare;
+            typedef T                                                                       mapped_type;
+            typedef std::pair<Key, T>                                                       value_type;
+            typedef long int                                                                difference_type;
+            typedef size_t                                                                  size_type;
+            typedef typename choose_if_const<B, value_type&, const value_type&>::_type       reference;
+            typedef typename choose_if_const<B, value_type*, const value_type*>::_type       pointer;
+            typedef B_S_T*                                                                  nodeptr;
             
-        private:
-
+        protected:
             nodeptr     _ptr;
             nodeptr     _lastptr;
             key_compare _comp;

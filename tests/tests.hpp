@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 18:22:32 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 19:32:01 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ static void range_map(void)
 	m2["d"] = 42;
 	std::pair<ft::map<std::string, int>::iterator, ft::map<std::string, int>::iterator> a = m1.equal_range("a");
 	std::pair<std::map<std::string, int>::iterator, std::map<std::string, int>::iterator> b = m2.equal_range("a");
-	check("a.first->_ptr == b.first->first", a.first->_ptr, b.first->first);
+	check("a.first->first == b.first->first", a.first->first, b.first->first);
 	check("a.first->second == b.first->second", a.first->second, b.first->second);
 	check("a.second->first == b.second->first", a.second->first, b.second->first);
 	check("a.second->second == b.second->second", a.second->second, b.second->second);

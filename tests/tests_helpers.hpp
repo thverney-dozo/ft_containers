@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 18:07:44 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 18:37:14 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TESTS_HPP
 
 # include <vector>
+# include <utility>
 # include <list>
 # include <map>
 # include <stack>

@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/27 18:33:58 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 19:12:47 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,12 +311,10 @@ namespace ft
             std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
             {
                 return (std::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k)));
-
             };
             std::pair<iterator,iterator>             equal_range (const key_type& k)
             {
                 return (std::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));
-
             };
             allocator_type get_allocator() const {};
         
@@ -686,25 +684,68 @@ namespace ft
 
     };
     template <class Key, class T, class Compare, class Alloc>
-	void swap(ft::Map<Key, T, Compare, Alloc> &x, ft::Map<Key, T, Compare, Alloc> &y) {};
+	void swap(ft::Map<Key, T, Compare, Alloc> &x, ft::Map<Key, T, Compare, Alloc> &y)
+    {
+        x.swap(y);
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator==(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator==(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        if (a.size() != b.size())
+			return (false);
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator it = b.begin();
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = a.begin();
+		while (it != b.end())
+		{
+			if (*it != *it2)
+				return (false);
+			++it2;
+			++it;
+		}
+		return (true);
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator!=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator!=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        return (!(a == b));
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator>(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator>(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        if (a.size() > b.size())
+			return (true);
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator it = a.begin();
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator it2 = b.begin();
+		while (it != a.end() && it2 != b.end())
+		{
+			if (*it > *it2)
+				return (true);
+			++it2;
+			++it;
+		}
+		return (false);
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator<(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator<(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        return (!(a > b) && !(a == b));
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator>=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator>=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        return (!(a < b));
+    };
 	
     template <class Key, class T, class Compare, class Alloc>
-	bool operator<=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b) {};
+	bool operator<=(const map<Key, T, Compare, Alloc> &a, const map<Key, T, Compare, Alloc> &b)
+    {
+        return (!(a > b));
+    };
 
 }
 
