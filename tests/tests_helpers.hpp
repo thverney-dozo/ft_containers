@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 18:37:14 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 20:40:22 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 		return (false);
 	if (a.empty() != b.empty())
 		return (false);
-	typename ft::Map<T, S>::iterator it = a.begin();
+	typename ft::map<T, S>::iterator it = a.begin();
 	typename std::map<T, S>::iterator it2 = b.begin();
 	while (it != a.end())
 	{

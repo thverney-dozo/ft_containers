@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 12:31:53 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 19:27:36 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 20:38:47 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ namespace ft
             typedef Key                                             key_type;
             typedef Compare                                         key_compare;
             typedef T                                               mapped_type;
-            typedef ft::pair<const key_type, mapped_type>           value_type;
+            typedef std::pair<const key_type, mapped_type>           value_type;
             typedef long int                                        difference_type;
             typedef size_t                                          size_type;
             typedef typename choose_if_const<B, T&, const T&>::_type		reference;

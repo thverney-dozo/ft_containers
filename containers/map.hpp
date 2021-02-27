@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/27 19:12:47 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 21:01:16 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft
             B_S_T*                  _firstNd;
             B_S_T*                  _afterLast;
             size_type               _size_value;
-            allocator_type          _alloc_pair;
+            allocator_type          _allocator;
             key_compare             _compare;
             std::allocator<B_S_T>   _alloc_node; 
 
@@ -89,7 +89,7 @@ namespace ft
         public:
             explicit map (const key_compare& comp = key_compare(),
                     const allocator_type& alloc = allocator_type()) :
-                _size_value(0), _alloc_pair(alloc), _compare(comp)
+                _size_value(0), _allocator(alloc), _compare(comp)
             {
                 _afterLast = create_new_bst(std::pair<const key_type, mapped_type>());
                 _firstNd = _afterLast;
@@ -101,7 +101,7 @@ namespace ft
             map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
                     const allocator_type& alloc = allocator_type(),
 					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0) :
-                    _size_value(0), _alloc_pair(alloc), _compare(comp)
+                    _size_value(0), _allocator(alloc), _compare(comp)
             {
                 _afterLast = createNode(std::pair<const key_type, mapped_type>());
                 _firstNd = _afterLast;
@@ -115,7 +115,7 @@ namespace ft
             };
             
             map (const map& x) :
-                _size_value(0), _alloc_pair(x._alloc_pair), _compare(x._compare), _alloc_node(x._alloc_node)
+                _size_value(0), _allocator(x._allocator), _compare(x._compare), _alloc_node(x._alloc_node)
             {
                 _afterLast = createNode(std::pair<const key_type, mapped_type>());
                 _firstNd = _afterLast;
@@ -213,14 +213,14 @@ namespace ft
             };
             template <class InputIterator>
                 void insert (InputIterator first, InputIterator last,
-					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0) :
+					typename ft::enable_if<ft::is_input_iterator<InputIterator>::value, InputIterator>::type* = 0)
                 {
                     while (first != last)
                     insert(*first++);
                 };
             void erase (iterator position)
             {
-                delete_in_tree(position.getNode(), position->_ptr);
+                delete_in_tree(position.getNode(), position->first);
                 _size_value--;
             };
             size_type erase (const key_type& k)
@@ -244,7 +244,7 @@ namespace ft
                 swap(_afterLast, x._afterLast);
                 swap(_size_value, x._size_value);
                 swap(_compare, x._compare);
-                swap(_alloc_pair, x._alloc_pair);
+                swap(_allocator, x._allocator);
                 swap(_alloc_node, x._alloc_node);
             };
             void clear()    { erase(begin(), end()); };
@@ -516,8 +516,8 @@ namespace ft
             // CREATE A NEW NODE
             B_S_T    *create_new_bst(const value_type& new_bst)
             {
-                B_S_T* newNode = _allocNode.allocate(1);
-                _alloc_pair.construct(&newNode->set, new_bst);
+                B_S_T* newNode = new B_S_T;
+                newNode->set = new_bst;
                 newNode->parent = 0;
                 newNode->left = 0;
                 newNode->right = 0;
@@ -532,7 +532,7 @@ namespace ft
                     node->left = 0;
                 if (node->right)
                     node->right = 0;
-                _alloc_pair.destroy(&node->set);
+                _allocator.destroy(&node->set);
                 _alloc_node.deallocate(node, 1);
             };
             // FIND THE HIGHEST NODE
@@ -554,9 +554,9 @@ namespace ft
             {
                 if (!first || first == _afterLast)
                     return (0);
-                while (first && first->set.first != search && first != _afterLast)
+                while (first && first->set.first != key.first && first != _afterLast)
                 {
-                    if (first->set.first < search)
+                    if (first->set.first < key.first)
                         first = first->right;
                     else
                         first = first->left;
@@ -635,9 +635,9 @@ namespace ft
                     }
                     else
                     {
-                        B_S_T* maxNode = searchMaxNode(tmp->left);
-                        _alloc_pair.destroy(&tmp->set);
-                        _alloc_pair.construct(&tmp->set, maxNode->set);
+                        B_S_T* maxNode = max_val_node(tmp->left);
+                        _allocator.destroy(&tmp->set);
+                        _allocator.construct(&tmp->set, maxNode->set);
                         return (delete_in_tree(tmp->left, maxNode->set.first));
                     }
                 }
@@ -666,8 +666,8 @@ namespace ft
                 else
                 {
                     B_S_T* maxNode = searchMaxNode(tmp->left);
-                    _alloc_pair.destroy(&tmp->set);
-                    _alloc_pair.construct(&tmp->set, maxNode->set);
+                    _allocator.destroy(&tmp->set);
+                    _allocator.construct(&tmp->set, maxNode->set);
                     return delete_in_tree(tmp->left, maxNode->set.first);
                 }
                 balance_tree(tmp_parent);
@@ -684,7 +684,7 @@ namespace ft
 
     };
     template <class Key, class T, class Compare, class Alloc>
-	void swap(ft::Map<Key, T, Compare, Alloc> &x, ft::Map<Key, T, Compare, Alloc> &y)
+	void swap(ft::map<Key, T, Compare, Alloc> &x, ft::map<Key, T, Compare, Alloc> &y)
     {
         x.swap(y);
     };
