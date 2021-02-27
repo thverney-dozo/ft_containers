@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 12:31:53 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/26 18:28:29 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 18:21:44 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #define MAP_ITERATOR
 
 #include "../iterators/is_const_it.hpp"
-#include "../iterators/avl_tree.hpp"
-// #include "../containers/map.hpp"
 
 namespace ft
 {
@@ -27,7 +25,7 @@ namespace ft
             typedef Key                                                     key_type;
             typedef Compare                                                 key_compare;
             typedef T                                                       mapped_type;
-            typedef ft::pair<const key_type, mapped_type>                   value_type;
+            typedef std::pair<const key_type, mapped_type>                  value_type;
             typedef long int                                                difference_type;
             typedef size_t                                                  size_type;
             typedef typename choose_if_const<B, T&, const T&>::_type		reference;
@@ -43,7 +41,7 @@ namespace ft
         public:
             map_iterator(nodeptr node = 0, nodeptr last = 0, const key_compare& comp = key_compare()) :
                 _ptr(node), _lastptr(last), _comp(comp) {}
-            map_iterator(const map_iterator<Key, T, Compare, Node, false>& cpy)
+            map_iterator(const map_iterator<Key, T, Compare, B_S_T, false>& cpy)
             {
                 _ptr = cpy.getNode();
                 _lastptr = cpy.getlast();
@@ -60,11 +58,11 @@ namespace ft
                 }
                 return (*this);
             }
-            nodeptr getNode() const             { return _ptr; }
-            nodeptr getlast() const         { return _lastptr; }
-            key_compare getCompare() const      { return _comp; }
-            reference operator*() const         { return (_ptr->set); }
-            pointer operator->() const          { return (&_ptr->set); }
+            nodeptr getNode()           const { return (_ptr); }
+            nodeptr getlast()           const { return (_lastptr); }
+            key_compare getCompare()    const { return (_comp); }
+            reference operator*()       const { return (_ptr->set); }
+            pointer operator->()        const { return (&_ptr->set); }
             map_iterator& operator++()
             {
                 nodeptr prev = _ptr;
@@ -166,13 +164,13 @@ namespace ft
             bool operator!=(const map_iterator& it) const   { return (it._ptr != _ptr); }
         
         private:
-            node searchMax(Node *first)
+            B_S_T* searchMax(B_S_T *first)
             {
                 if (first && first != _lastptr && first->right && first->right != _lastptr)
                     return searchMax(first->right);
                 return first;
             }
-            node searchMin(Node *first)
+            B_S_T* searchMin(B_S_T *first)
             {
                 if (first && first != _lastptr && first->left && first->left != _lastptr)
                     return searchMin(first->left);
@@ -180,7 +178,7 @@ namespace ft
             }
     };
     
-    template <class Key, class T, class Compare, typename Node, bool B>
+    template <class Key, class T, class Compare, typename B_S_T, bool B>
     class reverse_map_iterator
     {
         public:
@@ -204,15 +202,15 @@ namespace ft
 
             reverse_map_iterator(nodeptr node = 0, nodeptr last = 0, const key_compare& comp = key_compare()) :
                 _ptr(node), _lastptr(last), _comp(comp) {}
-            reverse_map_iterator(const reverse_map_iterator<Key, T, Compare, false>& cpy)
+            reverse_map_iterator(const reverse_map_iterator<Key, T, Compare, B_S_T, false>& cpy)
             {
                 _ptr = cpy.getNonConstNode();
                 _lastptr = cpy.getNonConstlast();
                 _comp = cpy.getCompare();
             }
-            explicit reverse_map_iterator(map_iterator<Key, T, Compare, false> cpy)
+            explicit reverse_map_iterator(map_iterator<Key, T, Compare, B_S_T, false> cpy)
             {
-                --cpy;
+                cpy--;
                 _ptr = cpy.getNonConstNode();
                 _lastptr = cpy.getNonConstlast();
                 _comp = cpy.getCompare();
@@ -334,13 +332,13 @@ namespace ft
             bool operator==(const reverse_map_iterator& it) const   { return (it._ptr == _ptr); }
             bool operator!=(const reverse_map_iterator& it) const   { return (it._ptr != _ptr); }
         private:
-            node searchMax(Node *first)
+            B_S_T* searchMax(B_S_T *first)
             {
                 if (first && first != _lastptr && first->right && first->right != _lastptr)
                     return searchMax(first->right);
                 return (first);
             }
-            node searchMin(Node *first)
+            B_S_T* searchMin(B_S_T *first)
             {
                 if (first && first != _lastptr && first->left && first->left != _lastptr)
                     return searchMin(first->left);

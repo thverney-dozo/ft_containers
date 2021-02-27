@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/19 15:24:45 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/27 18:07:44 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include "../containers/stack.hpp"
 # include "../containers/queue.hpp"
 # include "../containers/list.hpp"
-# include "../iterators/avl_tree.hpp"
+# include "../containers/map.hpp"
 
 # ifdef __linux__
 #  define RESET "\e[0m"
@@ -44,7 +44,7 @@
 # define GOOD "✓"
 # define FAIL "❌"
 
-void	test_vector(void);
+void	test_all();
 
 inline void print_header(std::string str)
 {
@@ -116,6 +116,25 @@ bool operator==(ft::list<T> &a, std::list<T> &b)
 	while (it != a.end())
 	{
 		if (*it != *it2)
+			return (false);
+		++it;
+		++it2;
+	}
+	return (true);
+};
+
+template <typename T, typename S>
+bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
+{
+	if (a.size() != b.size())
+		return (false);
+	if (a.empty() != b.empty())
+		return (false);
+	typename ft::Map<T, S>::iterator it = a.begin();
+	typename std::map<T, S>::iterator it2 = b.begin();
+	while (it != a.end())
+	{
+		if (it->first != it2->first || it->second != it2->second)
 			return (false);
 		++it;
 		++it2;
