@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:06:48 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 20:40:22 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/28 20:11:05 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ inline void print_header(std::string str)
 	int margin = (40 - str.length()) / 2;
 	int width = (margin * 2 + str.length()) + 2;
 	std::cout << BLUE << std::endl;
-	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '*') << std::endl;
-	std::cout << "*" << std::string(margin - (str.length() % 2 == 0 ? 1 : 0), ' ')\
-				<< str << std::string(margin, ' ') << "*" << std::endl;
-	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '*') << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '+') << std::endl;
+	std::cout << "+" << std::string(margin - (str.length() % 2 == 0 ? 1 : 0), ' ')\
+				<< str << std::string(margin, ' ') << "+" << std::endl;
+	std::cout << std::string(width - (str.length() % 2 == 0 ? 1 : 0), '+') << std::endl;
 	std::cout << RESET;
 };
 

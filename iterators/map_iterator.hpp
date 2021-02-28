@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 12:31:53 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 20:38:47 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/28 01:03:49 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,6 +345,41 @@ namespace ft
                     return searchMin(first->left);
                 return (first);
             }
+    };
+    
+    template <class T>
+    class allocator
+    {
+        public:
+            typedef T           value_type;
+            typedef T*          pointer;
+            typedef T&          reference;
+            typedef const T*    const_pointer;
+            typedef const T&    const_reference;
+            typedef size_t      size_type;
+            typedef long int    difference_type;
+            allocator() throw() {};
+            allocator(const allocator&) throw() {};
+            template <class U>
+                allocator(const allocator<U>&) throw() {};
+            ~allocator() throw() {};
+            pointer address(reference x) const              { return &x; }
+            const_pointer address(const_reference x) const  { return &x; }
+            pointer allocate(size_type n)
+            {
+                pointer ret;
+                size_t size = n * sizeof(value_type);
+                try { ret = reinterpret_cast<pointer>(::operator new(size)); }
+                catch(const std::exception& e) { std::cerr << e.what() << '\n'; }
+                return ret;
+            }
+            void deallocate (pointer p, size_type n)
+            {
+                (void)n;
+                ::operator delete(p);
+            }
+            void construct(pointer p, const T& v) { new((void*)p)T(v); }
+            void destroy(pointer p) { p->~T(); }
     };
 };
 

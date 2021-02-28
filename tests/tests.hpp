@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/27 19:32:01 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/02/28 20:14:08 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,7 @@
  '----------------' '----------------' '----------------' 
 */
 
-template <class T>
-static void print_map(T &map)
-{
-	typename T::iterator it = map.begin();
-	std::cout << " --- Map of size " << map.size() << " ---" << std::endl;
-	while (it != map.end())
-	{
-		std::cout << it->first << ": " << it->second << std::endl;
-		++it;
-	}
-	std::cout << " --- " << std::endl;
-}
-
-static void constructors_map(void)
+void constructors_map(void)
 {
 	print_header("Constructors / Copy");
 	std::pair<int, int> a[] = {std::make_pair(0, 1), std::make_pair(1, 0), std::make_pair(2, 1)};
@@ -60,20 +47,10 @@ static void constructors_map(void)
 	m7[0] = 1;
 	m7[1] = 2;
 	m7[2] = 3;
+
 	m8[0] = 1;
 	m8[1] = 2;
 	m8[2] = 3;
-	// print_map(m7);
-	// print_map(m8);
-	// std::cout << (++m7.begin())->second << std::endl;
-	// ft::map<int, int>::iterator it = m7.begin();
-	// while (it != m7.end())
-	// {
-	// 	// ft::map<int, int>::iterator it2 = m7.find(it->first);
-	// 	std::cout << it.node()->pair.second << std::endl;
-	// 	// std::cout << it->first << "=" << it2->second << std::endl;
-	// 	++it;
-	// }
 	check("(copy) m7 == m8", (m7 == m8));
 	ft::map<int, int> m9;
 	std::map<int, int> m10;
@@ -82,7 +59,7 @@ static void constructors_map(void)
 	check("(copy) m9 == m10", (m9 == m10));
 }
 
-static void max_size_map(void)
+void max_size_map(void)
 {
 	print_header("Size");
 	ft::map<int, int> m1;
@@ -91,9 +68,15 @@ static void max_size_map(void)
 	ft::map<std::string, int> m3;
 	std::map<std::string, int> m4;
 	check("m3.max_size() == m4.max_size()", m3.max_size(), m4.max_size());
+	ft::map<std::string, int> m5;
+	std::map<std::string, int> m6;
+	check("m5.max_size() == m6.max_size()", m5.max_size(), m6.max_size());
+	ft::map<std::string, int> m7;
+	std::map<std::string, int> m8;
+	check("m7.max_size() == m8.max_size()", m7.max_size(), m8.max_size());
 }
 
-static void access_operator_map(void)
+void access_operator_map(void)
 {
 	print_header("[] operator");
 	ft::map<std::string, int> m1;
@@ -117,7 +100,7 @@ static void access_operator_map(void)
 	check("m1['z'] == m2['z']", m1["z"], m2["z"]);
 }
 
-static void insert_map(void)
+void insert_map(void)
 {
 	print_header("Insert");
 	std::pair<int, int> a[] = {std::make_pair(0, 1), std::make_pair(1, 0), std::make_pair(2, 1)};
@@ -133,7 +116,7 @@ static void insert_map(void)
 	check("m1 == m2", m1 == m2);
 }
 
-static void erase_map(void)
+void erase_map(void)
 {
 	print_header("Erase");
 	ft::map<std::string, int> m1;
@@ -162,7 +145,7 @@ static void erase_map(void)
 	check("m1 == m2", m1 == m2);
 }
 
-static void swap_map(void)
+void swap_map(void)
 {
 	print_header("Swap");
 	ft::map<std::string, int> m1;
@@ -185,7 +168,7 @@ static void swap_map(void)
 	check("m3 == m4", m3 == m4);
 }
 
-static void clear_map(void)
+void clear_map(void)
 {
 	print_header("Clear");
 	ft::map<std::string, int> m1;
@@ -199,7 +182,7 @@ static void clear_map(void)
 	check("m1 == m2", m1 == m2);
 }
 
-static void find_map(void)
+void find_map(void)
 {
 	print_header("Find");
 	ft::map<std::string, int> m1;
@@ -212,7 +195,7 @@ static void find_map(void)
 	check("m1.find('z') == m2.find('z')", m1.find("a")->second, m2.find("a")->second);
 }
 
-static void count_map(void)
+void count_map(void)
 {
 	print_header("Count");
 	ft::map<std::string, int> m1;
@@ -228,7 +211,7 @@ static void count_map(void)
 	check("m1.count('z') == m2.count('z')", m1.count("z"), m2.count("z"));
 }
 
-static void bounds_map()
+void bounds_map()
 {
 	print_header("Bounds");
 	ft::map<std::string, int> m1;
@@ -247,7 +230,7 @@ static void bounds_map()
 	check("m1.upper_bound() == m2.upper_bound()", m1.upper_bound("c")->first, m2.upper_bound("c")->first);
 }
 
-static void range_map(void)
+void range_map(void)
 {
 	print_header("Equal range");
 	ft::map<std::string, int> m1;
@@ -268,7 +251,7 @@ static void range_map(void)
 	check("a.second->second == b.second->second", a.second->second, b.second->second);
 }
 
-static void operators_comp_map(void)
+void operators_comp_map(void)
 {
 	print_header("Operators");
 	ft::map<std::string, int> m1;
@@ -323,7 +306,7 @@ static void operators_comp_map(void)
  '----------------'  '----------------'  '----------------'  '----------------' 
 */
 template <class T>
-static void print_list(T &list)
+void print_list(T &list)
 {
 	typename T::iterator it = list.begin();
 	typename T::iterator it2;
@@ -344,7 +327,7 @@ struct Greater {
     bool operator()(const int &a, const int &b) {return a < b;}
 };
 
-static void constructors_list(void)
+void constructors_list(void)
 {
 	print_header("Default constructor");
 	int test[] = {0, 1, 2, 3};
@@ -365,7 +348,7 @@ static void constructors_list(void)
 	check("(copy) l9 == l10", l9 == l10);
 }
 
-static void copy_operator_list(void)
+void copy_operator_list(void)
 {
 	print_header("Operator =");
 	int test[] = {0, 1, 2, 3};
@@ -383,18 +366,21 @@ static void copy_operator_list(void)
 	check("l2 != l4", l2 != l4);
 }
 
-static void max_size_list(void)
+void max_size_list(void)
 {
 	print_header("Max size");
 	ft::list<int> l1;
 	std::list<int> l2;
 	ft::list<std::string> l3;
 	std::list<std::string> l4;
+	ft::list<std::string> l5;
+	std::list<std::string> l6;
 	check("l1.max_size() == l2.max_size()", l1.max_size(), l2.max_size());
 	check("l3.max_size() == l4.max_size()", l3.max_size(), l4.max_size());
+	check("l5.max_size() == l6.max_size()", l5.max_size(), l6.max_size());
 }
 
-static void front_back_list(void)
+void front_back_list(void)
 {
 	print_header("Front / Back");
 	ft::list<int> l1;
@@ -410,7 +396,7 @@ static void front_back_list(void)
 	check("l1.back() == l2.back()", l1.back(), l2.back());
 }
 
-static void assign_list(void)
+void assign_list(void)
 {
 	print_header("Assign");
 	int test[] = {0, 1, 2, 3};
@@ -424,7 +410,7 @@ static void assign_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static void push_list(void)
+void push_list(void)
 {
 	print_header("Push front/back");
 	ft::list<int> l1;
@@ -447,7 +433,7 @@ static void push_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static void swap_list(void)
+void swap_list(void)
 {
 	print_header("Swap");
 	ft::list<int> l1;
@@ -468,7 +454,7 @@ static void swap_list(void)
 	check("l3 == l4", l3 == l4);
 }
 
-static void resize_list(void)
+void resize_list(void)
 {
 	print_header("Resize / Clear");
 	ft::list<int> l1;
@@ -489,7 +475,7 @@ static void resize_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static void splice_list(void)
+void splice_list(void)
 {
 	print_header("Splice");
 	ft::list<int> l1((size_t)10, 5);
@@ -518,9 +504,9 @@ static void splice_list(void)
 	check("l3 == l4", l3 == l4);
 }
 
-static bool even_list(const int& value) { return (value % 2) == 0; } 
+bool even_list(const int& value) { return (value % 2) == 0; } 
 
-static void remove_list(void)
+void remove_list(void)
 {
 	print_header("Remove / Remove if");
 	int test[] = {0, 0, 0, 1, 2, 0, 5, 3, 4, 5, 1, -1, 0, 1};
@@ -536,7 +522,7 @@ static void remove_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static void erase_list(void)
+void erase_list(void)
 {
 	print_header("Erase");
 	int test[] = {0, 0, 0, 1, 2, 0, 5, 3, 4, 5, 1, -1, 0, 1};
@@ -554,12 +540,12 @@ static void erase_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static bool compare_list(int a, int b) 
+bool compare_list(int a, int b) 
 { 
     return (a >= b); 
 } 
 
-static void unique_list()
+void unique_list()
 {
 	print_header("Unique");
 	int test[] = {0, 0, 0, 1, 2, 0, 5, 3, 4, 5, 1, -1, 0, 1};
@@ -575,12 +561,12 @@ static void unique_list()
 	check("l1 == l2", l1 == l2);
 }
 
-static bool compare2_list(int a, int b) 
+bool compare2_list(int a, int b) 
 { 
     return (a == b); 
 } 
 
-static void merge_list(void)
+void merge_list(void)
 {
 	print_header("Merge");
 	int test[] = {1, 2, 3};
@@ -603,7 +589,7 @@ static void merge_list(void)
 	check("l3 == l4", l3 == l4);
 }
 
-static void reverse_list(void)
+void reverse_list(void)
 {
 	print_header("Reverse");
 	int test[] = {0, 0, 0, 1, 2, 0, 5, 3, 4, 5, 1, -1, 0, 1};
@@ -614,7 +600,7 @@ static void reverse_list(void)
 	check("l1 == l2", l1 == l2);
 }
 
-static void operators_list(void)
+void operators_list(void)
 {
 	print_header("Operators");
 	int test[] = {0, 0, 0, 1, 2, 0, 5, 3, 4, 5, 1, -1, 0, 1};
@@ -660,7 +646,7 @@ static void operators_list(void)
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 */
 
-static void constructors_queue(void)
+void constructors_queue(void)
 {
 	print_header("Constructor");
 	ft::queue<int> q1;
@@ -669,7 +655,7 @@ static void constructors_queue(void)
 	check("q1.empty() == q2.empty()", q1.empty() == q2.empty());
 }
 
-static void front_back_queue(void)
+void front_back_queue(void)
 {
 	print_header("Front / Back / Push / Pop");
 	ft::queue<int> q1;
@@ -705,7 +691,7 @@ static void front_back_queue(void)
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 */
 
-static void constructors_stack(void)
+void constructors_stack(void)
 {
 	print_header("Constructor");
 	ft::stack<int> q1;
@@ -714,7 +700,7 @@ static void constructors_stack(void)
 	check("q1.empty() == q2.empty()", q1.empty() == q2.empty());
 }
 
-static void front_back_stack(void)
+void front_back_stack(void)
 {
 	print_header("Front / Back / Push / Pop");
 	ft::stack<int> q1;
@@ -748,7 +734,7 @@ static void front_back_stack(void)
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------' 
 */
 template <typename T>
-static void print_vector(T vec, std::string type)
+void print_vector(T vec, std::string type)
 {
 	typename T::iterator it;
 
@@ -765,7 +751,7 @@ static void print_vector(T vec, std::string type)
 }
 
 template <typename T>
-static void print_vector_reverse(T vec, std::string type)
+void print_vector_reverse(T vec, std::string type)
 {
 	typename T::iterator it;
 
@@ -781,7 +767,7 @@ static void print_vector_reverse(T vec, std::string type)
 	std::cout << std::endl;
 }
 
-static void default_constructor_vector(void)
+void default_constructor_vector(void)
 {
 	print_header("Default constructor");
 	ft::vector<int> v1;
@@ -796,7 +782,7 @@ static void default_constructor_vector(void)
 	check("v1 == v2", v1 == v2);
 }
 
-static void copy_constructor_vector(void)
+void copy_constructor_vector(void)
 {
 	print_header("Copy");
 	ft::vector<int> v1;
@@ -817,7 +803,7 @@ static void copy_constructor_vector(void)
 	check("v2 != v4", (v2 != v4));
 }
 
-static void max_size_vector(void)
+void max_size_vector(void)
 {
 	print_header("Max size");
 	ft::vector<std::string> v1;
@@ -828,7 +814,7 @@ static void max_size_vector(void)
 	check("v1.max_size() == v2.max_size()", v1.max_size(), v2.max_size());
 }
 
-static void resize_vector(void)
+void resize_vector(void)
 {
 	print_header("Resize");
 	ft::vector<std::string> v1;
@@ -841,7 +827,7 @@ static void resize_vector(void)
 	check("v1 == v2", (v1 == v2));
 }
 
-static void access_operator_vector(void)
+void access_operator_vector(void)
 {
 	print_header("[] operator, at()");
 	ft::vector<int> v1;
@@ -889,7 +875,7 @@ static void access_operator_vector(void)
 	}
 }
 
-static void front_back_vector(void)
+void front_back_vector(void)
 {
 	print_header("Front / Back");
 	ft::vector<int> v1;
@@ -904,7 +890,7 @@ static void front_back_vector(void)
 	check("v1.back() == v2.back()", v1.back(), v2.back());
 }
 
-static void assign_vector(void)
+void assign_vector(void)
 {
 	print_header("Assign");
 	std::string test[] = {"Hey", "what's", "up", "?"};
@@ -918,7 +904,7 @@ static void assign_vector(void)
 	check("v1 == v2", v1 == v2);
 }
 
-static void insert_vector(void)
+void insert_vector(void)
 {
 	print_header("Insert");
 	int test[] = {1, 2, 3};
@@ -944,7 +930,7 @@ static void insert_vector(void)
 	check("v1 == v2 part 6", v1 == v2);
 }
 
-static void erase_vector(void)
+void erase_vector(void)
 {
 	print_header("Erase / Clear");
 	std::string test[] = {"Hey", "what's", "up", "?"};
@@ -960,7 +946,7 @@ static void erase_vector(void)
 	check("v1 == v2", v1 == v2);
 }
 
-static void swap_vector(void)
+void swap_vector(void)
 {
 	print_header("Swap");
 	ft::vector<int> v1;
@@ -983,7 +969,7 @@ static void swap_vector(void)
 	check("v3 == v4", v3 == v4);
 }
 
-static void operators_vector(void)
+void operators_vector(void)
 {
 	print_header("Operators");
 	ft::vector<int> v1;
