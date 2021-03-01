@@ -6,7 +6,7 @@
 /*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/03/01 14:39:23 by thverney         ###   ########.fr       */
+/*   Updated: 2021/03/01 15:51:38 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -404,6 +404,66 @@ void constructors_list(void)
 	ft::list<int> l9(l7);
 	std::list<int> l10(l8);
 	check("(copy) l9 == l10", l9 == l10);
+	ft::list<int>::iterator it = l7.begin();
+	while (it != l7.end())
+	{
+		std::cout << it.info;
+		++it;
+	}	
+	std::cout << std::endl;
+	std::list<int>::iterator it2 = l8.begin();
+	while (it2 != l8.end())
+	{
+		std::cout << it2->first;
+		++it2;
+	}	
+	std::cout << std::endl;
+	check("(iterator) m9 == m10", (it->first == it2->first));
+	ft::list<int>::const_iterator it = l7.begin();
+	while (it != l7.end())
+	{
+		std::cout << it->first;
+		++it;
+	}	
+	std::cout << std::endl;
+	std::list<int>::const_iterator it2 = l8.begin();
+	while (it2 != l8.end())
+	{
+		std::cout << it2->first;
+		++it2;
+	}	
+	std::cout << std::endl;
+	check("(const_iterator) m9 == m10", (it->first == it2->first));
+	ft::list<int>::reverse_iterator it3 = l7.rbegin();
+	while (it3 != l7.rend())
+	{
+		std::cout << it3->first;
+		++it3;
+	}	
+	std::cout << std::endl;
+	std::list<int>::reverse_iterator it4 = l8.rbegin();
+	while (it4 != l8.rend())
+	{
+		std::cout << it4->first;
+		++it4;
+	}	
+	std::cout << std::endl;
+	check("(reverse_iterator) m9 == m10", (it3->first == it4->first));
+	ft::list<int>::const_reverse_iterator it5 = l7.rbegin();
+	while (it5 != l7.rend())
+	{
+		std::cout << it5->first;
+		++it5;
+	}	
+	std::cout << std::endl;
+	std::list<int>::const_reverse_iterator it6 = l8.rbegin();
+	while (it6 != l8.rend())
+	{
+		std::cout << it6->first;
+		++it6;
+	}	
+	std::cout << std::endl;
+	check("(const_reverse_iterator) m9 == m10", (it5->first == it6->first));
 }
 
 void copy_operator_list(void)
