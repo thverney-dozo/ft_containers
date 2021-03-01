@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tests.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/02/28 20:14:08 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/03/01 14:39:23 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,74 @@ void constructors_map(void)
 	m7[0] = 1;
 	m7[1] = 2;
 	m7[2] = 3;
+	m7[3] = 4;
+	m7[4] = 5;
+	m7[5] = 6;
+	m7[6] = 7;
+	m7[7] = 8;
+	m7[8] = 9;
 
 	m8[0] = 1;
 	m8[1] = 2;
 	m8[2] = 3;
+	m8[3] = 4;
+	m8[4] = 5;
+	m8[5] = 6;
+	m8[6] = 7;
+	m8[7] = 8;
+	m8[8] = 9;
+
 	check("(copy) m7 == m8", (m7 == m8));
 	ft::map<int, int> m9;
 	std::map<int, int> m10;
 	m9 = m7;
 	m10 = m8;
 	check("(copy) m9 == m10", (m9 == m10));
+	ft::map<int, int>::const_iterator it = m7.begin();
+	while (it != m7.end())
+	{
+		std::cout << it->first;
+		++it;
+	}	
+	std::cout << std::endl;
+	std::map<int, int>::const_iterator it2 = m8.begin();
+	while (it2 != m8.end())
+	{
+		std::cout << it2->first;
+		++it2;
+	}	
+	std::cout << std::endl;
+	check("(const_iterator) m9 == m10", (it->first == it2->first));
+	ft::map<int, int>::reverse_iterator it3 = m7.rbegin();
+	while (it3 != m7.rend())
+	{
+		std::cout << it3->first;
+		++it3;
+	}	
+	std::cout << std::endl;
+	std::map<int, int>::reverse_iterator it4 = m8.rbegin();
+	while (it4 != m8.rend())
+	{
+		std::cout << it4->first;
+		++it4;
+	}	
+	std::cout << std::endl;
+	check("(reverse_iterator) m9 == m10", (it3->first == it4->first));
+	ft::map<int, int>::const_reverse_iterator it5 = m7.rbegin();
+	while (it5 != m7.rend())
+	{
+		std::cout << it5->first;
+		++it5;
+	}	
+	std::cout << std::endl;
+	std::map<int, int>::const_reverse_iterator it6 = m8.rbegin();
+	while (it6 != m8.rend())
+	{
+		std::cout << it6->first;
+		++it6;
+	}	
+	std::cout << std::endl;
+	check("(const_reverse_iterator) m9 == m10", (it5->first == it6->first));
 }
 
 void max_size_map(void)

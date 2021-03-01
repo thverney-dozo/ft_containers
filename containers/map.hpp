@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 12:47:08 by thverney          #+#    #+#             */
-/*   Updated: 2021/02/28 20:01:46 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/03/01 13:52:35 by thverney         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 
             struct B_S_T
             {
-                std::pair<Key, T> set;
+                std::pair<Key, T>       set;
                 B_S_T*                  parent;
                 B_S_T*                  left;
                 B_S_T*                  right;
