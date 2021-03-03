@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:49:13 by thverney          #+#    #+#             */
-/*   Updated: 2021/03/03 13:35:28 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/03/03 17:36:05 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 # include <iostream>
+# include <sstream>
 # include <algorithm>
 # include "../iterators/random_access_iterator.hpp"
 # include "../iterators/rev_random_access_iterator.hpp"
@@ -119,17 +120,27 @@ namespace ft
 			*/
 			reference operator[] (size_type n)					{ return (_ptr[n]); };
 			const_reference operator[] (size_type n) 	const 	{ return (_ptr[n]); };
-			reference at (size_type n)
+			reference at(size_type n)
 			{
-				if (n >= _size_value && n >= 0)
-					throw std::out_of_range("Index out of range");
-				return (_ptr[n]);
+				std::stringstream str;
+				if (!(n < size()))
+				{
+					str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->size() << ")";
+					throw std::out_of_range(str.str());
+				}
+				else
+					return (_ptr[n]);
 			};
-			const_reference at (size_type n) const
+			const_reference at(size_type n) const
 			{
-				if (n >= _size_value && n >= 0)
-					throw std::out_of_range("Index out of range");
-				return (_ptr[n]);
+				std::stringstream str;
+				if (!(n < size()))
+				{
+					str << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->size() << ")";
+					throw std::out_of_range(str.str());
+				}
+				else
+					return (_ptr[n]);
 			};
 			reference front() 										{ return (_ptr[0]); };
 			const_reference front() 					const		{ return (_ptr[0]); };
