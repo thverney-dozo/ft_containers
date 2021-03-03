@@ -6,7 +6,7 @@
 /*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/03/03 13:36:23 by aeoithd          ###   ########.fr       */
+/*   Updated: 2021/03/03 17:44:17 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1088,7 +1088,7 @@ void access_operator_vector(void)
 	check("v1[2] == v2[2]", v1[2], v2[2]);
 	try
 	{
-		std::cout << "v1.at(100):  " << v1.at(100) << ": " << FAIL << std::endl;
+		std::cout << "v1.at(100): " << v1.at(100) << ": " << FAIL << std::endl;
 	}
 	catch (std::exception &e)
 	{
@@ -1104,7 +1104,7 @@ void access_operator_vector(void)
 	}
 	try
 	{
-		std::cout << "v1.at(-1):  " << v1.at(-1) << ": " << FAIL  << std::endl;
+		std::cout << "v1.at(-1): " << v1.at(-1) << ": " << FAIL  << std::endl;
 	}
 	catch (std::exception &e)
 	{
