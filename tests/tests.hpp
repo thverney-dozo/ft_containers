@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tests.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thverney <thverney@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aeoithd <aeoithd@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 05:08:56 by aeoithd           #+#    #+#             */
-/*   Updated: 2021/03/01 15:51:38 by thverney         ###   ########.fr       */
+/*   Updated: 2021/03/03 13:36:23 by aeoithd          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,51 +70,82 @@ void constructors_map(void)
 	m9 = m7;
 	m10 = m8;
 	check("(copy) m9 == m10", (m9 == m10));
-	ft::map<int, int>::const_iterator it = m7.begin();
-	while (it != m7.end())
+	std::string my_map_res;
+	std::string real_map_res;
+	ft::map<int, int>::iterator it = m7.begin();
+	for(size_t i = 0; it != m7.end(); i++)
 	{
+		my_map_res.insert(i, 1, it->first);
 		std::cout << it->first;
-		++it;
-	}	
+		it++;
+	}
 	std::cout << std::endl;
-	std::map<int, int>::const_iterator it2 = m8.begin();
-	while (it2 != m8.end())
+	std::map<int, int>::iterator it2 = m8.begin();
+	for(size_t i = 0; it2 != m8.end(); i++)
 	{
+		real_map_res.insert(i, 1, it2->first);
 		std::cout << it2->first;
-		++it2;
-	}	
+		it2++;
+	}
 	std::cout << std::endl;
-	check("(const_iterator) m9 == m10", (it->first == it2->first));
-	ft::map<int, int>::reverse_iterator it3 = m7.rbegin();
-	while (it3 != m7.rend())
+	check("(iterator) m9 == m10", (my_map_res == real_map_res));
+	my_map_res.clear();
+	real_map_res.clear();
+	ft::map<int, int>::const_iterator it3 = m7.begin();
+	for(size_t i = 0; it3 != m7.end(); i++)
 	{
+		my_map_res.insert(i, 1, it3->first);
 		std::cout << it3->first;
-		++it3;
-	}	
+		it3++;
+	}
 	std::cout << std::endl;
-	std::map<int, int>::reverse_iterator it4 = m8.rbegin();
-	while (it4 != m8.rend())
+	std::map<int, int>::const_iterator it4 = m8.begin();
+	for(size_t i = 0; it4 != m8.end(); i++)
 	{
+		real_map_res.insert(i, 1, it4->first);
 		std::cout << it4->first;
-		++it4;
-	}	
+		it4++;
+	}
 	std::cout << std::endl;
-	check("(reverse_iterator) m9 == m10", (it3->first == it4->first));
-	ft::map<int, int>::const_reverse_iterator it5 = m7.rbegin();
-	while (it5 != m7.rend())
+	check("(const_iterator) m9 == m10", (my_map_res == real_map_res));
+	my_map_res.clear();
+	real_map_res.clear();
+	ft::map<int, int>::reverse_iterator it5 = m7.rbegin();
+	for(size_t i = 0; it5 != m7.rend(); i++)
 	{
+		my_map_res.insert(i, 1, it5->first);
 		std::cout << it5->first;
-		++it5;
-	}	
+		it5++;
+	}
 	std::cout << std::endl;
-	std::map<int, int>::const_reverse_iterator it6 = m8.rbegin();
-	while (it6 != m8.rend())
+	std::map<int, int>::reverse_iterator it6 = m8.rbegin();
+	for(size_t i = 0; it6 != m8.rend(); i++)
 	{
+		real_map_res.insert(i, 1, it6->first);
 		std::cout << it6->first;
-		++it6;
-	}	
+		it6++;
+	}
 	std::cout << std::endl;
-	check("(const_reverse_iterator) m9 == m10", (it5->first == it6->first));
+	check("(reverse_iterator) m9 == m10", (my_map_res == real_map_res));
+	my_map_res.clear();
+	real_map_res.clear();
+	ft::map<int, int>::const_reverse_iterator it7 = m7.rbegin();
+	for(size_t i = 0; it7 != m7.rend(); i++)
+	{
+		my_map_res.insert(i, 1, it7->first);
+		std::cout << it7->first;
+		it7++;
+	}
+	std::cout << std::endl;
+	std::map<int, int>::const_reverse_iterator it8 = m8.rbegin();
+	for(size_t i = 0; it8 != m8.rend(); i++)
+	{
+		real_map_res.insert(i, 1, it8->first);
+		std::cout << it8->first;
+		it8++;
+	}
+	std::cout << std::endl;
+	check("(const_reverse_iterator) m9 == m10", (my_map_res == real_map_res));
 }
 
 void max_size_map(void)
@@ -388,7 +419,7 @@ struct Greater {
 void constructors_list(void)
 {
 	print_header("Default constructor");
-	int test[] = {0, 1, 2, 3};
+	int test[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	ft::list<int> l1;
 	std::list<int> l2;
 	check("(default) l1 == l2", l1 == l2);
@@ -398,72 +429,88 @@ void constructors_list(void)
 	ft::list<int> l5((size_t)10, 42);
 	std::list<int> l6((size_t)10, 42);
 	check("(fill) l5 == l6", l5 == l6);
-	ft::list<int> l7(test, test + 4);
-	std::list<int> l8(test, test + 4);
+	ft::list<int> l7(test, test + 7);
+	std::list<int> l8(test, test + 7);
 	check("(iterator) l7 == l8", l7 == l8);
 	ft::list<int> l9(l7);
 	std::list<int> l10(l8);
 	check("(copy) l9 == l10", l9 == l10);
+	std::string my_list_res;
+	std::string real_list_res;
 	ft::list<int>::iterator it = l7.begin();
-	while (it != l7.end())
+	for(size_t i = 0; it != l7.end(); i++)
 	{
-		std::cout << it.info;
-		++it;
-	}	
+		my_list_res.insert(i, 1, *it);
+		std::cout << *it;
+		it++;
+	}
 	std::cout << std::endl;
 	std::list<int>::iterator it2 = l8.begin();
-	while (it2 != l8.end())
+	for(size_t i = 0; it2 != l8.end(); i++)
 	{
-		std::cout << it2->first;
-		++it2;
-	}	
+		real_list_res.insert(i, 1, *it2);
+		std::cout << *it2;
+		it2++;
+	}
 	std::cout << std::endl;
-	check("(iterator) m9 == m10", (it->first == it2->first));
-	ft::list<int>::const_iterator it = l7.begin();
-	while (it != l7.end())
+	check("(iterator) l7 == l8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::list<int>::const_iterator it3 = l7.begin();
+	for(size_t i = 0; it3 != l7.end(); i++)
 	{
-		std::cout << it->first;
-		++it;
-	}	
+		my_list_res.insert(i, 1, *it3);
+		std::cout << *it3;
+		it3++;
+	}
 	std::cout << std::endl;
-	std::list<int>::const_iterator it2 = l8.begin();
-	while (it2 != l8.end())
+	std::list<int>::const_iterator it4 = l8.begin();
+	for(size_t i = 0; it4 != l8.end(); i++)
 	{
-		std::cout << it2->first;
-		++it2;
-	}	
+		real_list_res.insert(i, 1, *it4);
+		std::cout << *it4;
+		it4++;
+	}
 	std::cout << std::endl;
-	check("(const_iterator) m9 == m10", (it->first == it2->first));
-	ft::list<int>::reverse_iterator it3 = l7.rbegin();
-	while (it3 != l7.rend())
+	check("(const_iterator) l7 == l8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::list<int>::reverse_iterator it5 = l7.rbegin();
+	for(size_t i = 0; it5 != l7.rend(); i++)
 	{
-		std::cout << it3->first;
-		++it3;
-	}	
+		my_list_res.insert(i, 1, *it5);
+		std::cout << *it5;
+		it5++;
+	}
 	std::cout << std::endl;
-	std::list<int>::reverse_iterator it4 = l8.rbegin();
-	while (it4 != l8.rend())
+	std::list<int>::reverse_iterator it6 = l8.rbegin();
+	for(size_t i = 0; it6 != l8.rend(); i++)
 	{
-		std::cout << it4->first;
-		++it4;
-	}	
+		real_list_res.insert(i, 1, *it6);
+		std::cout << *it6;
+		it6++;
+	}
 	std::cout << std::endl;
-	check("(reverse_iterator) m9 == m10", (it3->first == it4->first));
-	ft::list<int>::const_reverse_iterator it5 = l7.rbegin();
-	while (it5 != l7.rend())
+	check("(reverse_iterator) l7 == l8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::list<int>::const_reverse_iterator it7 = l7.rbegin();
+	for(size_t i = 0; it7 != l7.rend(); i++)
 	{
-		std::cout << it5->first;
-		++it5;
-	}	
+		my_list_res.insert(i, 1, *it7);
+		std::cout << *it7;
+		it7++;
+	}
 	std::cout << std::endl;
-	std::list<int>::const_reverse_iterator it6 = l8.rbegin();
-	while (it6 != l8.rend())
+	std::list<int>::const_reverse_iterator it8 = l8.rbegin();
+	for(size_t i = 0; it8 != l8.rend(); i++)
 	{
-		std::cout << it6->first;
-		++it6;
-	}	
+		real_list_res.insert(i, 1, *it8);
+		std::cout << *it8;
+		it8++;
+	}
 	std::cout << std::endl;
-	check("(const_reverse_iterator) m9 == m10", (it5->first == it6->first));
+	check("(const_reverse_iterator) l7 == l8", (my_list_res == real_list_res));
 }
 
 void copy_operator_list(void)
@@ -898,6 +945,86 @@ void default_constructor_vector(void)
 	v2.push_back(2);
 	v2.push_back(3);
 	check("v1 == v2", v1 == v2);
+	int test[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	ft::vector<int> v7(test, test + 7);
+	std::vector<int> v8(test, test + 7);
+	check("(iterator constructor) v7 == v8", v7 == v8);
+	std::string my_list_res;
+	std::string real_list_res;
+	ft::vector<int>::iterator it = v7.begin();
+	for(size_t i = 0; it != v7.end(); i++)
+	{
+		my_list_res.insert(i, 1, *it);
+		std::cout << *it;
+		it++;
+	}
+	std::cout << std::endl;
+	std::vector<int>::iterator it2 = v8.begin();
+	for(size_t i = 0; it2 != v8.end(); i++)
+	{
+		real_list_res.insert(i, 1, *it2);
+		std::cout << *it2;
+		it2++;
+	}
+	std::cout << std::endl;
+	check("(iterator) v7 == v8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::vector<int>::const_iterator it3 = v7.begin();
+	for(size_t i = 0; it3 != v7.end(); i++)
+	{
+		my_list_res.insert(i, 1, *it3);
+		std::cout << *it3;
+		it3++;
+	}
+	std::cout << std::endl;
+	std::vector<int>::const_iterator it4 = v8.begin();
+	for(size_t i = 0; it4 != v8.end(); i++)
+	{
+		real_list_res.insert(i, 1, *it4);
+		std::cout << *it4;
+		it4++;
+	}
+	std::cout << std::endl;
+	check("(const_iterator) v7 == v8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::vector<int>::reverse_iterator it5 = v7.rbegin();
+	for(size_t i = 0; it5 != v7.rend(); i++)
+	{
+		my_list_res.insert(i, 1, *it5);
+		std::cout << *it5;
+		it5++;
+	}
+	std::cout << std::endl;
+	std::vector<int>::reverse_iterator it6 = v8.rbegin();
+	for(size_t i = 0; it6 != v8.rend(); i++)
+	{
+		real_list_res.insert(i, 1, *it6);
+		std::cout << *it6;
+		it6++;
+	}
+	std::cout << std::endl;
+	check("(reverse_iterator) v7 == v8", (my_list_res == real_list_res));
+	my_list_res.clear();
+	real_list_res.clear();
+	ft::vector<int>::const_reverse_iterator it7 = v7.rbegin();
+	for(size_t i = 0; it7 != v7.rend(); i++)
+	{
+		my_list_res.insert(i, 1, *it7);
+		std::cout << *it7;
+		it7++;
+	}
+	std::cout << std::endl;
+	std::vector<int>::const_reverse_iterator it8 = v8.rbegin();
+	for(size_t i = 0; it8 != v8.rend(); i++)
+	{
+		real_list_res.insert(i, 1, *it8);
+		std::cout << *it8;
+		it8++;
+	}
+	std::cout << std::endl;
+	check("(const_reverse_iterator) v7 == v8", (my_list_res == real_list_res));
 }
 
 void copy_constructor_vector(void)
